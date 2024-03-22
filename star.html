@@ -1,0 +1,75 @@
+<head>
+    <link type="text/css" rel="stylesheet" href="/assets/burger.css" />
+  </head>
+  <body>
+    <nav class="menu--bottom--right" role="navigation">
+      <div class="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+        <ul class="menuItem">
+          <li><a href="./portfolio.html">portfolio</a></li>
+          <li><a href="./shop.html">shop</a></li>
+          <li><a href="./info.html">info</a></li>
+        </ul>
+      </div>
+    </nav>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #232323;
+        }
+        .center-nav{
+            opacity: 0;
+            background-image: url(/star.svg);
+            background-size: cover;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            width: 400px;
+            height: 400px;
+            margin: 0;
+            padding: 0;
+            transition: all 0.25s ease-in-out;
+        }
+        .center-nav > div{
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(/star.svg);
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .center-nav:hover{
+            opacity: .9;
+            transform: rotate(45deg);
+        }
+        .center-nav:hover > div{
+            opacity: .8;
+            transform: rotate(-45deg);
+        }
+        .center-nav:hover > div:hover{
+            opacity: 1;
+            transform: rotate(-45deg);
+        }
+        .center-nav > div > a{
+            color: black;
+            text-decoration: none;
+        }
+        .center-nav > div > a:hover{
+            transform: scale(1.1);
+        }
+    </style>
+    <div class="center-nav">
+        <div><a href="#" class="center-nav-item">interactive</a></div>
+        <div><a href="#" class="center-nav-item">motion</a></div>
+        <div><a href="#" class="center-nav-item">websites</a></div>
+        <div><a href="#" class="center-nav-item">works</a></div>
+    </div>
+  </body>
+  

@@ -1,0 +1,521 @@
+@font-face {
+  font-family: Milksea;
+  src: url(/assets/Milksea.ttf);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap");
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Milksea", "Tilt Neon", monospace;
+  color: rgb(255, 251, 0);
+}
+
+html {
+  background-color: rgb(0, 0, 0);
+}
+
+canvas {
+  position: fixed;
+  z-index: -1;
+}
+
+h1 {
+  font-size: 5em;
+  padding: 0;
+  margin: 0;
+}
+h3 {
+  font-size: 1.8em;
+  padding: 0;
+  margin: 0;
+}
+h4 {
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0;
+}
+ul {
+  list-style-type: none;
+}
+#info {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.navigation {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 2em;
+}
+
+.navigation a {
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 7vh;
+  color: rgb(255, 251, 0);
+  text-align: right;
+  transition: color 1s ease-in-out;
+}
+
+.navigation a:hover {
+  color: rgba(255, 0, 0, 0.7);
+}
+.navigationBlack {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 2em;
+}
+
+.navigationBlack a {
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 5vh;
+  text-align: right;
+  color: rgba(0, 0, 0, 1);
+  transition: color 1s ease-in-out;
+}
+
+.navigationBlack a:hover {
+  color: rgba(255, 0, 0, 0.7);
+}
+
+#homeLink {
+  z-index: 100;
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 7vh;
+  text-align: left;
+  color: #d5fff6;
+  transition: color 1s ease-in-out;
+}
+
+.homeLink:hover {
+  color: rgba(255, 0, 0, 0.7);
+}
+.artistsLink {
+  z-index: 100;
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 5vh;
+  text-align: right;
+  color: rgba(255, 255, 255, 1);
+  transition: color 1s ease-in-out;
+}
+
+.artistsLink:hover {
+  color: rgba(255, 0, 0, 0.7);
+}
+
+.sevenPx {
+  position: fixed;
+  width: 7vw;
+  top: 0;
+  bottom: 0;
+  right: 8vw;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.sixPx {
+  position: fixed;
+  width: 6vw;
+  top: 0;
+  bottom: 0;
+  right: 15vw;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.fivePx {
+  position: fixed;
+  width: 5vw;
+  top: 0;
+  bottom: 0;
+  right: 20vw;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.fourPx {
+  position: fixed;
+  width: 4vw;
+  top: 0;
+  bottom: 0;
+  right: 24vw;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.threePx {
+  position: fixed;
+  width: 3vw;
+  top: 0;
+  bottom: 0;
+  right: 27vw;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.twoPx {
+  position: fixed;
+  width: 2vw;
+  top: 0;
+  bottom: 0;
+  right: 29vw;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.onePx {
+  position: fixed;
+  width: 5vw;
+  top: 0;
+  bottom: 0;
+  right: 31vw;
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+}
+
+.influencersBlur {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.audio {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+
+.title {
+  display: none;
+}
+.rightNavigation {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 2em;
+  z-index: 100;
+}
+
+.rightNavigation a {
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 25px;
+  text-align: right;
+  color: rgb(255, 251, 0);
+  transition: color 1s ease-in-out;
+}
+
+.rightNavigation a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+.contactSection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 2em;
+}
+
+.contactSection li {
+  font-size: 1.5em;
+}
+.contactList {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  bottom: 2em;
+  left: 2em;
+  right: 2em;
+}
+.contactItem {
+  width: 20vw;
+  color: rgb(255, 255, 01);
+  text-align: left;
+  transition: color 1s ease-in-out, background 1s ease-in-out;
+  padding: 1em;
+  margin: 2em;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+.contactItem:hover {
+  color: rgb(255, 251, 0);
+  background: rgba(0, 0, 0, 0.3);
+}
+.contactItem a {
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 1.1em;
+  color: rgb(255, 251, 0);
+  transition: color 1s ease-in-out;
+}
+.contactItem a:hover {
+  color: rgb(0, 4, 255);
+}
+.contactHome a {
+  bottom: 1em;
+  top: unset;
+  font-size: 25px;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+}
+
+.galleryNavigation {
+  color: rgb(255, 251, 0);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1em;
+  border-radius: 15%;
+  text-decoration: none;
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.left {
+  position: fixed;
+  top: 50%;
+  left: 5%;
+  transform: translate(0, -50%);
+}
+.right {
+  position: fixed;
+  top: 50%;
+  right: 5%;
+  transform: translate(0, -50%);
+}
+.videoGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.videoGrid iframe {
+  margin: 5em;
+  border-radius: 20px;
+}
+#indexUIWindow {
+  position: fixed;
+  top: 15vh;
+  left: 15vw;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+#portfolioUIWindowMaterials {
+  z-index: 100;
+  position: fixed;
+  bottom: 25vh;
+  left: 10vw;
+}
+#portfolioUIWindowObjects {
+  z-index: 100;
+  position: fixed;
+  bottom: 10vh;
+  left: 15vw;
+}
+/*
+  responsive
+*/
+
+@media screen and (max-width: 992px) {
+  .navigationBlack {
+    display: none;
+  }
+  .contactHome a {
+    display: block;
+  }
+  .UIPlus {
+    display: none;
+  }
+  .UITitle {
+    display: none;
+  }
+  .UISubheading a {
+    display: none;
+  }
+  .contactList {
+    flex-direction: column;
+  }
+  .contactItem {
+    width: auto;
+    margin: 0.25em 0;
+    padding: 0.5em;
+  }
+  .socLink {
+    display: none;
+  }
+  .socLink img {
+    display: none;
+  }
+  .indexNavigation {
+    bottom: 50vh;
+  }
+  .navigation a {
+    font-size: 40px;
+  }
+  #indexUIWindow {
+    position: fixed;
+    top: unset;
+    bottom: 5vh;
+    left: 5vw;
+    width: 90vw;
+  }
+  #portfolioUIWindowMaterials {
+    bottom: 15vh;
+    display: none;
+  }
+  #portfolioUIWindowObjects {
+    display: none;
+  }
+  #contactUIWindow {
+    width: 80vw;
+  }
+}
+/*
+UI
+*/
+
+.UIPlus {
+  font-size: 7vh;
+  position: fixed;
+  bottom: 2em;
+  left: 2em;
+}
+.UITitle {
+  font-size: 45px;
+  position: fixed;
+  text-decoration: dotted;
+  top: 8%;
+  left: 48%;
+  transform: translate(-0, -50%);
+}
+.UISubheading a {
+  font-size: 20px;
+  position: fixed;
+  top: 2.2em;
+  left: 2.2em;
+  color: rgb(255, 251, 0);
+  text-decoration: none;
+}
+.shopShopLink {
+  text-decoration: none;
+  color: rgb(255, 251, 0);
+  position: fixed;
+  left: 0;
+  bottom: 1em;
+  right: 0;
+  text-align: center;
+  font-size: 50px;
+}
+.socLink {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin: 2.2em;
+}
+.socLink img {
+  width: 10vw;
+  height: 10vw;
+  background-image: url(./assets/textures/socLink.png);
+  background-size: cover;
+}
+.UIWindow {
+  cursor: default;
+  padding: 2px;
+  height: max-content;
+  width: max-content;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 15px;
+  font-weight: bold;
+}
+.UIWindowToolbar {
+  text-align: right;
+  justify-content: center;
+  padding: 0.25em;
+}
+.UIWindowToolbar span {
+  margin: 10px;
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+  background-color: rgba(78, 255, 231, 0);
+  transition: color 0.3s ease-in-out;
+}
+.UIWindowToolbar span:hover {
+  color: rgba(255, 0, 0, 1);
+}
+.UIWindowContent {
+  padding: 2em 1em;
+  background: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  border-radius: 15px;
+}
+.UIWindowContent span {
+  font-size: 25px;
+  background: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  border-radius: 15px;
+}
+/*
+      shine
+      */
+.glow {
+  color: #fff;
+  text-align: center;
+  -webkit-animation: glow 0.8s ease-in-out infinite alternate;
+  -moz-animation: glow 0.8s ease-in-out infinite alternate;
+  animation: glow 0.8s ease-in-out infinite alternate;
+}
+#contactUIWindowToolbar {
+  display: none;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 3px #ffffff5d, 0 0 4px #ffffff8a, 0 0 8px #e2e60057,
+      0 0 10px #e6d70080, 0 0 20px #e2e60086, 0 0 60px #e6b0007a,
+      0 0 25px #e6d70073;
+  }
+  to {
+    text-shadow: 0 0 5px #ffffff46, 0 0 10px #fffc4d85,
+      0 0 10px rgba(255, 243, 77, 0.534), 0 0 15px #deff4d44, 0 0 25px #ffed4d75,
+      0 0 25px #fff34d7e, 0 0 30px #fcff4d86;
+  }
+}
