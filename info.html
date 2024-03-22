@@ -8,8 +8,8 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
     <link rel="icon" type="image/x-icon" href="/3die.ico" />
-    <link type="text/css" rel="stylesheet" href="/assets/main.css" />
-    <link type="text/css" rel="stylesheet" href="/assets/burger.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
     <style>
       body {
         touch-action: none;
@@ -113,7 +113,7 @@
         // hdri
 
         new RGBELoader()
-          .setPath("/assets/")
+          .setPath("/IORI/assets/")
           .load("3dieMainBckg.hdr", function (texture) {
             texture.mapping = THREE.EquirectangularReflectionMapping;
 
@@ -124,10 +124,10 @@
         // objects
 
         const foregroundTexture = new THREE.TextureLoader().load(
-          "/assets/contact/background.jpg"
+          "/IORI/assets/contact/background.jpg"
         );
         const foregroundAplha = new THREE.TextureLoader().load(
-          "/assets/contact/foreground.jpg"
+          "/IORI/assets/contact/foreground.jpg"
         );
 
         foregroundMaterial = new THREE.MeshStandardMaterial({
@@ -136,10 +136,10 @@
           map: foregroundTexture,
         });
         const midgroundTexture = new THREE.TextureLoader().load(
-          "/assets/contact/background.jpg"
+          "/IORI/assets/contact/background.jpg"
         );
         const midgroundAlpha = new THREE.TextureLoader().load(
-          "/assets/contact/midground.jpg"
+          "/IORI/assets/contact/midground.jpg"
         );
 
         midgroundMaterial = new THREE.MeshStandardMaterial({
@@ -148,7 +148,7 @@
           map: midgroundTexture,
         });
         const backgroundTexture = new THREE.TextureLoader().load(
-          "/assets/contact/background.jpg"
+          "/IORI/assets/contact/background.jpg"
         );
 
         backgroundMaterial = new THREE.MeshStandardMaterial({
@@ -180,7 +180,7 @@
         backgroundObj.position.z = -500;
 
         const loader = new FontLoader();
-        loader.load("/assets/contactFont.json", function (font) {
+        loader.load("/IORI/assets/contactFont.json", function (font) {
           const color = 0xfffb00;
 
           const matDark = new THREE.LineBasicMaterial({

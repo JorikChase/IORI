@@ -8,8 +8,8 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
     <link rel="icon" type="image/x-icon" href="/3die.ico" />
-    <link type="text/css" rel="stylesheet" href="/assets/main.css" />
-    <link type="text/css" rel="stylesheet" href="/assets/burger.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
     <style>
       * {
         box-sizing: border-box;
@@ -169,15 +169,15 @@
 
         const materialFile = ["JBK_balls.mtl"];
         const materialBase = [
-          "/assets/textures/shopTextures/base.png",
+          "/IORI/assets/textures/shopTextures/base.png",
           "JBK_balls.mtl",
         ];
         const materialRoughness = [
-          "/assets/textures/shopTextures/roughness.png",
+          "/IORI/assets/textures/shopTextures/roughness.png",
           "JBK_balls.mtl",
         ];
         const materialBump = [
-          "/assets/textures/shopTextures/bump.png",
+          "/IORI/assets/textures/shopTextures/bump.png",
           "JBK_balls.mtl",
         ];
 
@@ -220,7 +220,7 @@
           // hdri
 
           new RGBELoader()
-            .setPath("/3die/assets/textures/")
+            .setPath("/3die/IORI/assets/textures/")
             .load("outer-space-background-small.hdr", function (texture) {
               texture.mapping = THREE.EquirectangularReflectionMapping;
 
@@ -243,7 +243,7 @@
             );
             const mapBase = new THREE.TextureLoader().load(materialBase[0 + i]);
             new OBJLoader()
-              .setPath("/3die/assets/objects/2market/")
+              .setPath("/3die/IORI/assets/objects/2market/")
               .load(objectFile[0 + i], function (object) {
                 object.traverse(function (child) {
                   if (child instanceof THREE.Mesh) {
@@ -265,7 +265,7 @@
           const geometry = geometries[(0 + i) | 0];
 
           const backgroundTexture = new THREE.TextureLoader().load(
-            "/3die/assets/textures/shopTextures/" + textures[0 + i]
+            "/3die/IORI/assets/textures/shopTextures/" + textures[0 + i]
           );
 
           const material = new THREE.MeshStandardMaterial({

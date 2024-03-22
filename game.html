@@ -7,12 +7,12 @@
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
     <link rel="icon" type="image/x-icon" href="/3die.ico" />
-    <link type="text/css" rel="stylesheet" href="/assets/main.css" />
-    <link type="text/css" rel="stylesheet" href="/assets/burger.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
+    <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
     <style>
       @font-face {
         font-family: bitBoy;
-        src: url(/assets/dogica.ttf);
+        src: url(/IORI/assets/dogica.ttf);
       }
       body {
         font-family: bitBoy;
@@ -113,7 +113,7 @@
 
       const sphereGeometry = new THREE.IcosahedronGeometry(SPHERE_RADIUS, 5);
       const tennisMaterial = new THREE.TextureLoader().load(
-        "/assets/tennis.jpg"
+        "/IORI/assets/tennis.jpg"
       );
       const sphereMaterial = new THREE.MeshLambertMaterial({
         map: tennisMaterial,
@@ -437,7 +437,7 @@
         }
       }
 
-      const loader = new GLTFLoader().setPath("/assets/obj/");
+      const loader = new GLTFLoader().setPath("/IORI/assets/obj/");
 
       loader.load("col-wld.glb", (gltf) => {
         scene.add(gltf.scene);
@@ -497,7 +497,7 @@
       }
     </script>
     <audio autoplay id="backgroundMusic">
-      <source src="/assets/tennis_sound.mp3" />
+      <source src="/IORI/assets/tennis_sound.mp3" />
     </audio>
 
     <script>
