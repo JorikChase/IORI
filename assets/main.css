@@ -474,13 +474,13 @@ UI
   padding: 5px 15px;
   font-size: 18px;
   color: rgb(255, 255, 255);
-  background-color: rgba(78, 255, 231, 0.027);
   border-radius: 4px;
   transition: all 0.25s ease-in-out;
 }
 .UIWindowToolbar span:hover {
   color: rgba(255, 0, 0, 1);
   background: rgba(255, 166, 0, 0.046);
+  border-radius: 50%;
 }
 .UIWindowContent {
   padding: 2em 1em;
