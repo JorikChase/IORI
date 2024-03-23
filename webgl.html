@@ -1,12 +1,9 @@
 
-<title> it's raining </title>
+<title> WEBGL sandbox </title>
 <link rel="icon" type="image/x-icon" href="/IORI/3die.ico" />
-<!--
-    <script src="http://XR:9000/Scripts/jquery-1.6.4.min.js"></script>
-    <script src="http://XR:9000/Scripts/jquery.signalR-2.2.0.min.js"></script>
-    <script src="http://XR:9000/signalr/hubs"></script>
--->
 <script type="text/javascript">
+    // thanks to John Horton Conway's game of life algorithm, thank You to Cake23 for a WebGL sandbox framework from scratch, formula bases, basic coordinate transformations and inspiration.
+                                                                           // github.com/Flexi23/Cake23 | WebSocket Hub for Kinect v2 and MIDI controllers
     // main texture loop dimensions
     var sizeX = 1024; // must be powers of 2
     var sizeY = 512;
@@ -38,106 +35,6 @@
     var h = 512; 
     var w = 1024; // spline editor texture size
 
-    var cake23; // github.com/Flexi23/Cake23 | WebSocket Hub for Kinect v2 and MIDI controllers
-    var cake23hostName = "F@XR";
-    var cake23userName = "F@XR";
-
-/*	
-    $(function () {
-        $.connection.hub.url = "http://XR:9000/signalr"; var kinect = $.connection.kinect2Hub;
-
-        kinect.client.onBody = function (bodyJson, projectionMappedPointsJson) {
-            var body = JSON.parse(bodyJson);
-            var trackingObject = getTrackingObject(body.TrackingId);
-            joints.forEach(j => {
-                var joint = body.Joints[j];
-                if (trackingObject.body) {
-                    joint.old = trackingObject.body.Joints[j];
-                    joint.old.old = null; // idea: keep a limited history
-                }
-                joint.x = joint.Position.X;
-                joint.y = joint.Position.Y;
-                joint.z = joint.Position.Z;
-                joint.state = joint.TrackingState;
-                joint.p2d = {};
-                project(joint, joint.p2d);
-            });
-            // bodysampler = JSON.parse(projectionMappedPointsJson); // this would be the inbuilt mapping of the 3d coordinates to the 1080p video camera
-            body.head = body.Joints["Head"];
-            body.handRight = { grab: false, point: false, object: null, old: trackingObject.body ? trackingObject.body.handRight : null };
-            switch (body.handRight.state = body.HandRightState) {
-                case 3:
-                    body.handRight.grab = true;
-                    break;
-                case 4:
-                    body.handRight.point = true;
-                    break;
-            }
-            body.handRight.id = "hr" + body.TrackingId;
-            if (body.handRight.point) {
-                body.handRight = body.Joints["HandTipRight"];
-            } else {
-                body.handRight.x = (body.Joints["HandTipRight"].Position.X * 2 + body.Joints["HandRight"].Position.X + body.Joints["ThumbRight"].Position.X * 2) / 5;
-                body.handRight.y = (body.Joints["HandTipRight"].Position.Y * 2 + body.Joints["HandRight"].Position.Y + body.Joints["ThumbRight"].Position.Y * 2) / 5;
-                body.handRight.z = (body.Joints["HandTipRight"].Position.Z * 2 + body.Joints["HandRight"].Position.Z + body.Joints["ThumbRight"].Position.Z * 2) / 5;
-                body.handRight.p2d = {};
-                project(body.handRight, body.handRight.p2d);
-            }
-            body.handLeft = { grab: false, point: false, object: null, old: trackingObject.body ? trackingObject.body.handLeft : null };
-            switch (body.handLeft.state = body.HandLeftState) {
-                case 3:
-                    body.handLeft.grab = true;
-                    break;
-                case 4:
-                    body.handLeft.point = true;
-                    break;
-            }
-            body.handLeft.id = "hl" + body.TrackingId;
-            if (body.handLeft.point) {
-                body.handLeft = body.Joints["HandTipLeft"];
-            } else {
-                body.handLeft.x = (body.Joints["HandTipLeft"].Position.X * 2 + body.Joints["HandLeft"].Position.X + body.Joints["ThumbLeft"].Position.X * 2) / 5;
-                body.handLeft.y = (body.Joints["HandTipLeft"].Position.Y * 2 + body.Joints["HandLeft"].Position.Y + body.Joints["ThumbLeft"].Position.Y * 2) / 5;
-                body.handLeft.z = (body.Joints["HandTipLeft"].Position.Z * 2 + body.Joints["HandLeft"].Position.Z + body.Joints["ThumbLeft"].Position.Z * 2) / 5;
-                body.handLeft.p2d = {};
-                project(body.handLeft, body.handLeft.p2d);
-            }
-            var trackingObject = getTrackingObject(body.TrackingId);
-            if (trackingObject.body == null) {
-                trackingObject.body = body;
-            } else {
-                var oldBody = trackingObject.body;
-                if (oldBody.handRight.grab) {
-                    body.handRight.object = oldBody.handRight.object;
-                }
-                if (oldBody.handLeft.grab) {
-                    body.handLeft.object = oldBody.handLeft.object;
-                }
-            }
-            trackingObject.body = body; // update
-        };
-        kinect.client.onBodies = function (trackingIdsJson, frame, userName) {
-            var trackingIds = null;
-            if (trackingIdsJson != null) {
-                trackingIds = JSON.parse(trackingIdsJson);
-            }
-            onBodies(trackingObjects, trackingIds, frame, userName);
-        };
-        kinect.client.onFace = onFace;
-
-        var midi = $.connection.midiHub;
-        midi.client.onMidi = onMidi;
-
-        cake23 = $.connection.cake23Hub;
-        cake23.client.register = userClient => console.log(["onRegister", userClient]);
-        cake23.client.dumpBodyTrackingBounds = dumpBodyTrackingBounds; // TODO
-
-        $.connection.hub.start().done(function () {
-            //cake23.server.register({ "UserName": cake23userName, "ClientName": "bodyTrackingBounds" });
-        });
-
-    });
-*/	
     var trackingObjects = [];
     function getTrackingObject(id) {
         var hit = null;
@@ -184,16 +81,8 @@
     }
 
     var midi = [];
-
-    // presets copied from the Chrome console after doodling with the knobs and sliders of my Korg nanoKontrol2
-
     // light theme
     midi = [0.8582677165354331, 0.8031496062992126, 0.889763779527559, 0, 0.6614173228346457, 0.5196850393700787, 0.6771653543307087, 0, null, null, null, null, null, null, null, null, 0.29133858267716534, 0.25196850393700787, 0.6299212598425197, 0.9212598425196851, 0.031496062992125984, 0.25984251968503935, 0.2125984251968504, 1];
-    // dark theme
-    //midi = [0.015748031496062992, 0, 0.09448818897637795, 0, 0.3858267716535433, 0.2047244094488189, 0.047244094488188976, 0, null, null, null, null, null, null, null, null, 0.6614173228346457, 0.7795275590551181, 0.8267716535433071, 1, 0.6456692913385826, 0.7165354330708661, 1, 1];
-
-
-    // #lightwheel particle color mapping from the Akai Midimix controller
 
     // cool one
     midi = [0.8582677165354331, 0.8031496062992126, 0.889763779527559, 0, 0.6614173228346457, 0.5196850393700787, 0.6771653543307087, 0, null, null, null, null, null, null, null, null, 0.7952755905511811, 0.6850393700787402, 0.7086614173228346, 1, 0.2047244094488189, 0.007874015748031496, 0, 0.5669291338582677, 0, 0, 0, 0.015748031496062992, 0.5511811023622047, 0.968503937007874, 0.1889763779527559, 0.007874015748031496, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.6771653543307087, 1, 0.015748031496062992, 0.4094488188976378, 0.9606299212598425, 0.7086614173228346, 0.031496062992125984, 0.12598425196850394, 0.5354330708661418, 0.47244094488188976, 0.14173228346456693, 0.5118110236220472, 0.8582677165354331, 0.2992125984251969, 0, 0];
@@ -486,9 +375,6 @@
         }
     }
 
-    // idea: use a pool of drag and drop control points and spawn where needed
-    // todo: implement a regular touchmove listener first and then fire events on the Kinect drag and drop control point object life cycle state changes #helluvacomment
-
     function updateDragonDropControls() {
         //return;
         var updated = false;
@@ -588,23 +474,6 @@
                 trackingObject.stickman = stickman;
             }
 
-            // draw the bones
-            /*
-            context.strokeStyle = "#FFF";
-            context.beginPath();
-
-            members.forEach(function (member) {
-                var joint1 = body.Joints[member[0]];
-                var joint2 = body.Joints[member[1]];
-                if (joint1.state == 2 && joint2.state == 2) {
-                    context.moveTo(joint1.p2d.x, joint1.p2d.y);
-                    context.lineTo(joint2.p2d.x, joint2.p2d.y);
-                }
-            });
-
-            context.lineWidth = 1.25;//64 / 256;
-            context.stroke();
-            */
 
             // draw the outline
 
@@ -713,36 +582,6 @@
             drawCrossThrough(trackingObject.body.handRight);
             context.stroke();
 
-            // draw the hands
-
-            /*
-            var handLeft = {};
-            var handRight = {};
-            project(trackingObject.body.handLeft, handLeft);
-            project(trackingObject.body.handRight, handRight);
-
-            context.beginPath();
-            context.strokeStyle = "#FFF";
-            if (trackingObject.body.handLeft.grab) {
-                context.strokeStyle = "#0F0";
-            }
-            context.rect(handLeft.x - 10, handLeft.y - 10, 20, 20);
-            context.stroke();
-
-            context.beginPath();
-            context.strokeStyle = "#FFF";
-            if (trackingObject.body.handRight.grab) {
-                context.strokeStyle = "#0F0";
-            }
-            context.rect(handRight.x - 10, handRight.y - 10, 20, 20);
-            context.stroke();
-            */
-
-            /*
-            joints.forEach(function (id) {
-                var joint = body.Joints[id];
-            });
-            */
 
             // draw the face
             context.fillStyle = "#FFF";
@@ -2800,7 +2639,6 @@ void main() {
     poiToy.applyColor = poiToy.createTextPatternFn("NODE17  -  DESIGNING HOPE  -  ", 0.5);
 
     function load() {
-        //hide(); // unhide with doubleclick
         clearInterval(fpsDisplayUpdateTimer);
         canvas2d = document.createElement("canvas");
         canvas2d.width = sizeX;
@@ -2814,7 +2652,7 @@ void main() {
         } catch (e) {
         }
         if (!gl) {
-            alert("Meh! Y u no support WebGL !?!");
+            alert("NO WEBGL support on your device");
             return;
         }
 
@@ -2826,7 +2664,7 @@ void main() {
                 alert(e);
             }
             if (!ext) {
-                alert("Meh! Y u no support " + name + " !?!");
+                alert("Your device doesn't load " + name);
                 return;
             }
             ext = false;
@@ -2835,7 +2673,7 @@ void main() {
         var vertexTextures = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);
 
         if (gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) == 0) {
-            alert("Meh! Y u no support vertex shader textures !?!");
+            alert("Your device doesn't support vertex shader textures.");
             return;
         } else {
             console.log("MAX_VERTEX_TEXTURE_IMAGE_UNITS = " + vertexTextures);
@@ -3662,12 +3500,6 @@ void main() {
         oldMouseX = mouseX;
         oldMouseY = mouseY;
 
-    }
-
-    function fr() { // updates every second
-        document.getElementById("fps").textContent = frame;
-        lastFramesPerSecond = frame;
-        frame = 0; // reset the frame counter
     }
 
     var hidden = false;
