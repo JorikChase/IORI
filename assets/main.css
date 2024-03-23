@@ -334,6 +334,7 @@ ul {
   -khtml-user-select: none;
   -webkit-user-select: none;
   -o-user-select: none;
+  border: rgba(211, 211, 211, 0.366) 1px solid;
 }
 #portfolioUIWindowMaterials {
   z-index: 100;
@@ -446,6 +447,7 @@ UI
   left: 0;
   bottom: 0;
   margin: 2.2em;
+  display: none;
 }
 .socLink img {
   width: 10vw;
@@ -455,7 +457,6 @@ UI
 }
 .UIWindow {
   cursor: default;
-  padding: 2px;
   height: max-content;
   width: max-content;
   background: rgba(0, 0, 0, 0);
@@ -466,16 +467,20 @@ UI
   text-align: right;
   justify-content: center;
   padding: 0.25em;
+  background: rgba(220, 255, 0, 0.102);
+  border-radius: 4px;
 }
 .UIWindowToolbar span {
-  margin: 10px;
+  padding: 5px 15px;
   font-size: 18px;
   color: rgb(255, 255, 255);
-  background-color: rgba(78, 255, 231, 0);
-  transition: color 0.3s ease-in-out;
+  background-color: rgba(78, 255, 231, 0.027);
+  border-radius: 3px;
+  transition: all 0.25s ease-in-out;
 }
 .UIWindowToolbar span:hover {
   color: rgba(255, 0, 0, 1);
+  background: rgba(255, 13, 0, 0.137);
 }
 .UIWindowContent {
   padding: 2em 1em;
