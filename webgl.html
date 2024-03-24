@@ -2936,7 +2936,6 @@ void main() {
         fluidInit(FBO_fluid_store);
         fluidInit(FBO_fluid_backbuffer);
 
-        fpsDisplayUpdateTimer = setInterval(fr, 1000);
         time = new Date().getTime() - starttime;
 
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
