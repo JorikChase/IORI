@@ -45,6 +45,7 @@
 
             let camera, scene, renderer, composer;
             let material, material2;
+            let sphere;
             let cubeCamera, cubeRenderTarget;
             let effect;
 
@@ -118,6 +119,14 @@
                     roughness: 0.05,
                     metalness: 0,
                 });
+
+                const radius = 7.5;
+
+                sphere = new THREE.Mesh(
+                    new THREE.IcosahedronGeometry(20, 8),
+                    material,
+                );
+                scene.add(sphere);
 
                 // Initialize marching cubes
                 effect = new MarchingCubes(resolution, material, true, true);
