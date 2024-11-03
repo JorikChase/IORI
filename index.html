@@ -59,7 +59,7 @@
             const resolution = 48;
             const isolation = 80;
             const subtract = 12;
-            const strength = 0.5;
+            const strength = 0.3;
 
             // Object positions storage
             let objectPositions = new Array(numMetaballs).fill().map(() => ({
@@ -154,58 +154,58 @@
 
                 // Cube position
                 objectPositions[0].position.set(
-                    Math.cos(time) * 0.15,
-                    Math.sin(time) * 0.15,
-                    Math.sin(time) * 0.15,
+                    Math.cos(time) * 0.02,
+                    Math.sin(time) * 0.02,
+                    Math.sin(time) * 0.02,
                 );
 
                 // Torus position
                 objectPositions[1].position.set(
-                    Math.cos(time + 30) * 0.15,
-                    Math.sin(time + 30) * 0.15,
-                    Math.sin(time + 30) * 0.15,
+                    Math.cos(time + 30) * 0.02,
+                    Math.sin(time + 30) * 0.02,
+                    Math.sin(time + 30) * 0.02,
                 );
 
                 // Tetrahedron position
                 objectPositions[2].position.set(
-                    Math.cos(time + 60) * 0.15,
-                    Math.sin(time + 60) * 0.15,
-                    Math.sin(time + 60) * 0.15,
+                    Math.cos(time + 60) * 0.02,
+                    Math.sin(time + 60) * 0.02,
+                    Math.sin(time + 60) * 0.02,
                 );
 
                 // Dodecahedron position
                 objectPositions[3].position.set(
-                    Math.cos(time + 90) * 0.15,
-                    Math.sin(time + 90) * 0.15,
-                    Math.sin(time + 90) * 0.15,
+                    Math.cos(time + 90) * 0.02,
+                    Math.sin(time + 90) * 0.02,
+                    Math.sin(time + 90) * 0.02,
                 );
 
                 // Donut position
                 objectPositions[4].position.set(
-                    Math.sin(time + 15) * 0.15,
-                    Math.cos(time + 15) * 0.15,
-                    Math.sin(time + 15) * 0.15,
+                    Math.sin(time + 15) * 0.02,
+                    Math.cos(time + 15) * 0.02,
+                    Math.sin(time + 15) * 0.02,
                 );
 
                 // Octahedron position
                 objectPositions[5].position.set(
-                    Math.cos(time + 45) * 0.15,
-                    Math.cos(time + 45) * 0.15,
-                    Math.sin(time + 45) * 0.15,
+                    Math.cos(time + 45) * 0.02,
+                    Math.cos(time + 45) * 0.02,
+                    Math.sin(time + 45) * 0.02,
                 );
 
                 // Pentahedron position
                 objectPositions[6].position.set(
-                    Math.sin(time + 75) * 0.15,
-                    Math.cos(time + 75) * 0.15,
-                    Math.sin(time + 75) * 0.15,
+                    Math.sin(time + 75) * 0.02,
+                    Math.cos(time + 75) * 0.02,
+                    Math.sin(time + 75) * 0.02,
                 );
 
                 // Sextahedron position
                 objectPositions[7].position.set(
-                    Math.cos(time + 105) * 0.15,
-                    Math.cos(time + 105) * 0.15,
-                    Math.sin(time + 105) * 0.15,
+                    Math.cos(time + 105) * 0.02,
+                    Math.cos(time + 105) * 0.02,
+                    Math.sin(time + 105) * 0.02,
                 );
 
                 // Add metaballs at each object position
