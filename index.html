@@ -32,19 +32,24 @@
                 }
             }
         </script>
+
         <script type="module">
             import * as THREE from "three";
+
             import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+
             import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
             import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
             import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
             import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
             import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
             import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
-            import { MarchingCubes } from "three/addons/objects/MarchingCubes.js";
+            import { AsciiEffect } from "three/addons/effects/AsciiEffect.js";
+
+            // declarations
 
             let camera, scene, renderer, composer;
-            let material, material2;
             let cube,
                 sphere,
                 torus,
@@ -53,31 +58,25 @@
                 octahedron,
                 donut,
                 pentahedron,
-                sextahedron;
+                sextahedron,
+                material,
+                effect;
+
             let cubeCamera, cubeRenderTarget;
-            let effect;
 
             let mouseX = 0,
                 mouseY = 0;
+
             let windowHalfX = window.innerWidth / 2;
             let windowHalfY = window.innerHeight / 2;
 
-            // Marching cubes parameters
-            const numMetaballs = 9;
-            const resolution = 64;
-            const isolation = 90;
-            const subtract = 45;
-            const strength = 0.3;
-
-            // Object positions storage
-            let objectPositions = new Array(numMetaballs).fill().map(() => ({
-                position: new THREE.Vector3(),
-                rotation: new THREE.Euler(),
-            }));
-
             init();
 
+            //init
+
             function init() {
+                //scope
+
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -88,7 +87,10 @@
                 document.body.appendChild(renderer.domElement);
 
                 document.addEventListener("mousemove", onDocumentMouseMove);
+
                 window.addEventListener("resize", onWindowResized);
+
+                // camera
 
                 camera = new THREE.PerspectiveCamera(
                     90,
@@ -99,33 +101,33 @@
                 camera.position.z = 70;
 
                 scene = new THREE.Scene();
-                scene.rotation.y = 0.5;
+                scene.rotation.y = 0.5; // avoid flying objects occluding the sun
 
-                // HDRI
+                // hdri
+
                 new RGBELoader()
                     .setPath("/IORI/assets/")
                     .load("3dieMainBckg.hdr", function (texture) {
                         texture.mapping =
                             THREE.EquirectangularReflectionMapping;
+
                         scene.background = texture;
                         scene.environment = texture;
                     });
 
-                // Cube render target for reflective material
+                // cubeRenderCamera
+
                 cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
                 cubeRenderTarget.texture.type = THREE.HalfFloatType;
+
                 cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
 
-                // Materials
+                // objects
+
                 material = new THREE.MeshStandardMaterial({
                     envMap: cubeRenderTarget.texture,
                     roughness: 0.05,
                     metalness: 1,
-                });
-
-                material2 = new THREE.MeshStandardMaterial({
-                    roughness: 0.05,
-                    metalness: 0,
                 });
 
                 const radius = 7.5;
@@ -134,16 +136,12 @@
                     new THREE.IcosahedronGeometry(20, 8),
                     material,
                 );
-                //scene.add(sphere);
+                scene.add(sphere);
 
-                // Initialize marching cubes
-                effect = new MarchingCubes(resolution, material, true, true);
-                effect.position.set(0, 0, 0);
-                effect.scale.set(100, 100, 100);
-                effect.enableUvs = false;
-                effect.enableColors = false;
-                effect.isolation = isolation;
-                scene.add(effect);
+                const material2 = new THREE.MeshStandardMaterial({
+                    roughness: 0.05,
+                    metalness: 0,
+                });
 
                 cube = new THREE.Mesh(
                     new THREE.BoxGeometry(radius, radius, radius),
@@ -193,89 +191,54 @@
                 );
                 scene.add(sextahedron);
 
-                // Post-processing
+                // postprocessing
+
                 composer = new EffectComposer(renderer);
                 composer.addPass(new RenderPass(scene, camera));
 
                 const effect2 = new ShaderPass(RGBShiftShader);
                 effect2.uniforms["amount"].value = 0.001;
                 composer.addPass(effect2);
+
+                const effect3 = new FilmPass(0.15, 0.025, 50, false);
+                // composer.addPass(effect3);
+
+                //
+
+                // effect = new AsciiEffect( renderer, ' .:-+*=%@#^?;', { invert: true } );
+                // effect.setSize( window.innerWidth, window.innerHeight );
+                // effect.domElement.style.color = "rgba(255, 255, 255, 0.5)";
+                // effect.domElement.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+
+                // Special case: append effect.domElement, instead of renderer.domElement.
+                // AsciiEffect creates a custom domElement (a div container) where the ASCII elements are placed.
+
+                // document.body.appendChild( effect.domElement );
             }
 
-            function updateMetaballs(time) {
-                effect.reset();
+            function onWindowResized() {
+                windowHalfX = window.innerWidth / 2;
+                windowHalfY = window.innerHeight / 2;
 
-                // Update positions using the same motion patterns from the original code
-                // Each position represents one of your original objects
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                composer.setSize(window.innerWidth, window.innerHeight);
 
-                // Cube position
-                objectPositions[0].position.set(
-                    Math.cos(time) * 0.03,
-                    Math.sin(time) * 0.03,
-                    Math.sin(time) * 0.03,
-                );
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
 
-                // Torus position
-                objectPositions[1].position.set(
-                    Math.cos(time + 30) * 0.03,
-                    Math.sin(time + 30) * 0.03,
-                    Math.sin(time + 30) * 0.03,
-                );
+                // effect.setSize( window.innerWidth, window.innerHeight );
+            }
 
-                // Tetrahedron position
-                objectPositions[2].position.set(
-                    Math.cos(time + 60) * 0.03,
-                    Math.sin(time + 60) * 0.03,
-                    Math.sin(time + 60) * 0.03,
-                );
+            function onDocumentMouseMove(event) {
+                mouseX = (event.clientX - windowHalfX) / 2;
+                mouseY = (event.clientY - windowHalfY) / 2;
+            }
 
-                // Dodecahedron position
-                objectPositions[3].position.set(
-                    Math.cos(time + 90) * 0.03,
-                    Math.sin(time + 90) * 0.03,
-                    Math.sin(time + 90) * 0.03,
-                );
+            function animation(msTime) {
+                // rotating objects
 
-                // Donut position
-                objectPositions[4].position.set(
-                    Math.sin(time + 15) * 0.03,
-                    Math.cos(time + 15) * 0.03,
-                    Math.sin(time + 15) * 0.03,
-                );
+                const time = msTime / 1000;
 
-                // Octahedron position
-                objectPositions[5].position.set(
-                    Math.cos(time + 45) * 0.03,
-                    Math.cos(time + 45) * 0.03,
-                    Math.sin(time + 45) * 0.03,
-                );
-
-                // Pentahedron position
-                objectPositions[6].position.set(
-                    Math.sin(time + 75) * 0.03,
-                    Math.cos(time + 75) * 0.03,
-                    Math.sin(time + 75) * 0.03,
-                );
-
-                // Sextahedron position
-                objectPositions[7].position.set(
-                    Math.cos(time + 105) * 0.03,
-                    Math.cos(time + 105) * 0.03,
-                    Math.sin(time + 105) * 0.03,
-                );
-                //sphere
-                objectPositions[8].position.set(0, 0, 0);
-
-                // Add metaballs at each object position
-                objectPositions.forEach((obj, i) => {
-                    effect.addBall(
-                        obj.position.x + 0.5,
-                        obj.position.y + 0.5,
-                        obj.position.z + 0.5,
-                        strength,
-                        subtract,
-                    );
-                });
                 cube.position.x = Math.cos(time) * 30;
                 cube.position.y = Math.sin(time) * 30;
                 cube.position.z = Math.sin(time) * 30;
@@ -332,40 +295,19 @@
                 sextahedron.rotation.x += 0.02;
                 sextahedron.rotation.y += 0.03;
 
-                effect.update();
-            }
+                // fps update
 
-            function onWindowResized() {
-                windowHalfX = window.innerWidth / 2;
-                windowHalfY = window.innerHeight / 2;
-
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                composer.setSize(window.innerWidth, window.innerHeight);
-            }
-
-            function onDocumentMouseMove(event) {
-                mouseX = (event.clientX - windowHalfX) / 2;
-                mouseY = (event.clientY - windowHalfY) / 2;
-            }
-
-            function animation(msTime) {
-                const time = msTime / 1000;
-
-                // Update metaballs
-                updateMetaballs(time);
-
-                // Camera movement
                 camera.position.x += (mouseX / 5 - camera.position.x) * 0.01;
                 camera.position.y += (-mouseY / 5 - camera.position.y) * 0.02;
+
                 camera.lookAt(scene.position);
 
-                // Update cubemap for reflective material
                 cubeCamera.update(renderer, scene);
 
                 renderer.render(scene, camera);
+
+                // effect.render( scene, camera );
+
                 composer.render();
             }
         </script>
@@ -396,7 +338,7 @@
                 ><img src="./IORI/assets/textures/socLink.png"
             /></a>
         </div>
-        <!-- --
+
         <script>
             function closeUI() {
                 document.getElementById("indexUIWindow").style.display = "none";
@@ -439,6 +381,6 @@
                     and make it <span class="glow">shine</span>.
                 </span>
             </div>
-        </div>-->
+        </div>
     </body>
 </html>
