@@ -93,104 +93,6 @@
                     background-image: url(/IORI/assets/kucharkybezdomova-bg.png);
                 }
             }
-            .container {
-                position: relative;
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .bubble {
-                position: absolute;
-                border-radius: 50%;
-                overflow: hidden;
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-                cursor: pointer;
-                border: 2px solid rgba(255, 255, 255, 0.1);
-                background: #111;
-                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-
-            .bubble:hover:not(.fullscreen) {
-                transform: scale(1.5);
-                z-index: 100;
-                box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            }
-
-            .bubble.fullscreen {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw !important;
-                height: 100vh !important;
-                border-radius: 0;
-                z-index: 1000;
-                border: none;
-            }
-
-            .bubble iframe {
-                width: 100%;
-                height: 100%;
-                border: none;
-                opacity: 0.9;
-                transition: opacity 0.3s;
-            }
-
-            .bubble:hover iframe {
-                opacity: 1;
-            }
-
-            .title {
-                position: fixed;
-                top: 2rem;
-                left: 2rem;
-                color: white;
-                font-size: 1.5rem;
-                opacity: 0.8;
-                z-index: 1000;
-            }
-
-            .bubble-title {
-                position: absolute;
-                bottom: -25px;
-                left: 50%;
-                transform: translateX(-50%);
-                color: white;
-                font-size: 12px;
-                white-space: nowrap;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
-
-            .bubble:hover .bubble-title {
-                opacity: 1;
-            }
-
-            .close-button {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: rgba(255, 255, 255, 0.2);
-                border: none;
-                color: white;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-                z-index: 1001;
-                display: none;
-                align-items: center;
-                justify-content: center;
-                font-size: 20px;
-                transition: background 0.3s;
-            }
-
-            .close-button:hover {
-                background: rgba(255, 255, 255, 0.3);
-            }
-
-            .close-button.visible {
-                display: flex;
-            }
         </style>
     </head>
     <body>
@@ -427,233 +329,64 @@
                 </ul>
             </div>
         </nav>
-        <div class="container" id="bubbleContainer"></div>
-        <button class="close-button" id="closeButton">×</button>
-
-        <script>
-            class BubblePortfolio {
-                constructor() {
-                    this.container = document.getElementById("bubbleContainer");
-                    this.closeButton = document.getElementById("closeButton");
-                    this.bubbles = [];
-                    this.websites = [
-                        { url: "https://zsprodeti.cz/", title: "ZS Pro Deti" },
-                        { url: "https://flashtones.cz/", title: "Flashtones" },
-                        { url: "https://livesupp.com/", title: "LiveSupp" },
-                        {
-                            url: "https://vilma-kono.glitch.me/",
-                            title: "Vilma Kono",
-                        },
-                        {
-                            url: "https://andrea-sokova.glitch.me/",
-                            title: "Andrea Sokova",
-                        },
-                        {
-                            url: "https://flame-simulation.glitch.me/",
-                            title: "Flame sim",
-                        },
-                        {
-                            url: "https://heartbreaking-happy-pluto.glitch.me/",
-                            title: "kalivoda",
-                        },
-                        {
-                            url: "https://tin-imported-dungeon.glitch.me/",
-                            title: "Tery Computer",
-                        },
-                        {
-                            url: "https://jarojaro.glitch.me/",
-                            title: "Jaroslav Jaro",
-                        },
-                        {
-                            url: "https://kucharkybezdomova.glitch.me/",
-                            title: "Kucharky Bez Domova",
-                        },
-                    ];
-                    this.init();
-                    this.animate();
-                    this.setupEventListeners();
-                }
-
-                init() {
-                    this.websites.forEach((site, i%2) => {
-                        const size = Math.random() * (180 - 140) + 140;
-                        const bubble = document.createElement("a");
-                        bubble.className = "bubble";
-                        bubble.style.width = size + "px";
-                        bubble.style.height = size + "px";
-                        bubble.href = "javascript:void(0)"; // Prevent default anchor behavior
-
-                        const iframe = document.createElement("iframe");
-                        iframe.src = site.url;
-                        bubble.appendChild(iframe);
-
-                        const title = document.createElement("div");
-                        title.className = "bubble-title";
-                        title.textContent = site.title;
-                        bubble.appendChild(title);
-
-                        this.container.appendChild(bubble);
-
-                        this.bubbles.push({
-                            element: bubble,
-                            iframe: iframe,
-                            x: Math.random() * (window.innerWidth - size),
-                            y: Math.random() * (window.innerHeight - size),
-                            speedX: (Math.random() - 0.5) * 2,
-                            speedY: (Math.random() - 0.5) * 2,
-                            size: size,
-                            mass: size,
-                            originalSize: size,
-                            originalX: 0,
-                            originalY: 0,
-                        });
-                    });
-                }
-
-                setupEventListeners() {
-                    this.bubbles.forEach((bubble) => {
-                        bubble.element.addEventListener("click", (e) => {
-                            e.preventDefault();
-                            if (
-                                !bubble.element.classList.contains("fullscreen")
-                            ) {
-                                this.expandBubble(bubble);
-                            }
-                        });
-                    });
-
-                    this.closeButton.addEventListener("click", () => {
-                        this.bubbles.forEach((bubble) => {
-                            if (
-                                bubble.element.classList.contains("fullscreen")
-                            ) {
-                                this.collapseBubble(bubble);
-                            }
-                        });
-                    });
-                }
-
-                expandBubble(bubble) {
-                    // Store original position
-                    const rect = bubble.element.getBoundingClientRect();
-                    bubble.originalX = rect.left;
-                    bubble.originalY = rect.top;
-                    bubble.element.style.transform = "none";
-
-                    // Pause animation for this bubble
-                    bubble.isExpanded = true;
-
-                    // Add fullscreen class
-                    bubble.element.classList.add("fullscreen");
-                    this.closeButton.classList.add("visible");
-                }
-
-                collapseBubble(bubble) {
-                    bubble.element.classList.remove("fullscreen");
-                    this.closeButton.classList.remove("visible");
-
-                    // Resume animation
-                    bubble.isExpanded = false;
-                }
-
-                checkCollision(b1, b2) {
-                    const dx = b2.x - b1.x;
-                    const dy = b2.y - b1.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    return distance < (b1.size + b2.size) / 2;
-                }
-
-                resolveCollision(b1, b2) {
-                    const dx = b2.x - b1.x;
-                    const dy = b2.y - b1.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    const nx = dx / distance;
-                    const ny = dy / distance;
-
-                    const rvx = b2.speedX - b1.speedX;
-                    const rvy = b2.speedY - b1.speedY;
-
-                    const velAlongNormal = rvx * nx + rvy * ny;
-
-                    if (velAlongNormal > 0) return;
-
-                    const restitution = 0.8;
-                    const impulseMagnitude =
-                        -(1 + restitution) * velAlongNormal;
-                    const impulse =
-                        impulseMagnitude / (1 / b1.mass + 1 / b2.mass);
-
-                    b1.speedX -= (impulse * nx) / b1.mass;
-                    b1.speedY -= (impulse * ny) / b1.mass;
-                    b2.speedX += (impulse * nx) / b2.mass;
-                    b2.speedY += (impulse * ny) / b2.mass;
-                }
-
-                animate() {
-                    this.bubbles.forEach((bubble) => {
-                        if (!bubble.isExpanded) {
-                            bubble.x += bubble.speedX;
-                            bubble.y += bubble.speedY;
-
-                            if (
-                                bubble.x <= 0 ||
-                                bubble.x >= window.innerWidth - bubble.size
-                            ) {
-                                bubble.speedX *= -0.8;
-                                bubble.x =
-                                    bubble.x <= 0
-                                        ? 0
-                                        : window.innerWidth - bubble.size;
-                            }
-                            if (
-                                bubble.y <= 0 ||
-                                bubble.y >= window.innerHeight - bubble.size
-                            ) {
-                                bubble.speedY *= -0.8;
-                                bubble.y =
-                                    bubble.y <= 0
-                                        ? 0
-                                        : window.innerHeight - bubble.size;
-                            }
-
-                            bubble.speedX *= 0.995;
-                            bubble.speedY *= 0.995;
-                        }
-                    });
-
-                    for (let i = 0; i < this.bubbles.length; i++) {
-                        for (let j = i + 1; j < this.bubbles.length; j++) {
-                            if (
-                                !this.bubbles[i].isExpanded &&
-                                !this.bubbles[j].isExpanded &&
-                                this.checkCollision(
-                                    this.bubbles[i],
-                                    this.bubbles[j],
-                                )
-                            ) {
-                                this.resolveCollision(
-                                    this.bubbles[i],
-                                    this.bubbles[j],
-                                );
-                            }
-                        }
-                    }
-
-                    this.bubbles.forEach((bubble) => {
-                        if (!bubble.isExpanded) {
-                            bubble.element.style.left = bubble.x + "px";
-                            bubble.element.style.top = bubble.y + "px";
-                        }
-                    });
-
-                    requestAnimationFrame(() => this.animate());
-                }
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-                new BubblePortfolio();
-            });
-        </script>
+        <div class="websites">
+            <div class="zsprodeti">
+                <a
+                    href="https://zsprodeti.cz/"
+                    class="website-link"
+                    target="_blank"
+                    style="background-image: url(/IORI/assets/deti-logo.svg)"
+                >
+                </a>
+            </div>
+            <div class="flashtones">
+                <a
+                    href="https://flashtones.cz/"
+                    class="website-link"
+                    target="_blank"
+                    style="background-image: url(/IORI/assets/Flashtones.svg)"
+                >
+                </a>
+            </div>
+            <div class="livesupp">
+                <a
+                    href="https://livesupp.com/"
+                    class="website-link"
+                    target="_blank"
+                    style="background-image: url(/IORI/assets/livesupp.svg)"
+                >
+                </a>
+            </div>
+            <div class="terycomputer">
+                <a
+                    href="https://tin-imported-dungeon.glitch.me/"
+                    class="website-link"
+                    target="_blank"
+                    style="background-image: url(/IORI/assets/terycomputer.svg)"
+                >
+                </a>
+            </div>
+            <div class="jarojaro">
+                <a
+                    href="https://jarojaro.glitch.me/"
+                    class="website-link"
+                    target="_blank"
+                    style="text-decoration: none; color: black"
+                >
+                    <h3 style="text-decoration: none">Jaroslav Jaro</h3>
+                </a>
+            </div>
+            <div class="kucharkybezdomova">
+                <a
+                    href="https://kucharkybezdomova.glitch.me/"
+                    class="website-link"
+                    target="_blank"
+                    style="
+                        background-image: url(/IORI/assets/kucharkybezdomova.png);
+                    "
+                >
+                </a>
+            </div>
+        </div>
     </body>
 </html>
