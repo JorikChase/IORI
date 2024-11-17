@@ -1,25 +1,102 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Portfolio - Interactive Websites Gallery</title>
+        <title>3die</title>
         <meta charset="utf-8" />
         <meta
             name="viewport"
             content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
         />
-        <meta
-            name="description"
-            content="Interactive portfolio gallery showcasing various website projects"
-        />
         <link rel="icon" type="image/x-icon" href="/IORI/3die.ico" />
         <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
         <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
         <style>
+            .websites {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            .websites > div {
+                width: 100%;
+                height: 100%;
+                background: rgba(173, 216, 230, 0.622);
+                display: flex;
+                justify-content: center;
+                align-items: flex-end;
+                padding: 1em;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
+                border-radius: 3px;
+            }
+            .websites > div:hover {
+                width: 100%;
+                height: 100%;
+                padding: 2em;
+                opacity: 1;
+            }
+            .zsprodeti:hover {
+                background-image: url(/IORI/assets/zsprodeti-bg.png);
+            }
+            .flashtones:hover {
+                background-image: url(/IORI/assets/flashtones-bg.png);
+            }
+            .livesupp:hover {
+                background-image: url(/IORI/assets/livesupp-bg.png);
+            }
+            .terycomputer:hover {
+                background-image: url(/IORI/assets/terycomputer-bg.png);
+            }
+            .jarojaro:hover {
+                background-image: url(/IORI/assets/jarojaro-bg.png);
+            }
+            .kucharkybezdomova:hover {
+                background-image: url(/IORI/assets/kucharkybezdomova-bg.png);
+            }
+            .website-link {
+                height: 2em;
+                width: 100%;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+            @media (orientation: portrait) {
+                .websites {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+                }
+                .websites > div {
+                    opacity: 1;
+                }
+                .websites > .zsprodeti {
+                    background-image: url(/IORI/assets/zsprodeti-bg.png);
+                }
+                .websites > .flashtones {
+                    background-image: url(/IORI/assets/flashtones-bg.png);
+                }
+                .websites > .livesupp {
+                    background-image: url(/IORI/assets/livesupp-bg.png);
+                }
+                .websites > .terycomputer {
+                    background-image: url(/IORI/assets/terycomputer-bg.png);
+                }
+                .websites > .jarojaro {
+                    background-image: url(/IORI/assets/jarojaro-bg.png);
+                }
+                .websites > .kucharkybezdomova {
+                    background-image: url(/IORI/assets/kucharkybezdomova-bg.png);
+                }
+            }
             .container {
                 position: relative;
                 width: 100vw;
                 height: 100vh;
-                background: #111;
             }
 
             .bubble {
@@ -39,12 +116,18 @@
                 box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
             }
 
-            .bubble:focus-visible {
-                outline: 3px solid #fff;
-                outline-offset: 2px;
+            .bubble.fullscreen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw !important;
+                height: 100vh !important;
+                border-radius: 0;
+                z-index: 1000;
+                border: none;
             }
 
-            .bubble-preview {
+            .bubble iframe {
                 width: 100%;
                 height: 100%;
                 border: none;
@@ -52,8 +135,18 @@
                 transition: opacity 0.3s;
             }
 
-            .bubble:hover .bubble-preview {
+            .bubble:hover iframe {
                 opacity: 1;
+            }
+
+            .title {
+                position: fixed;
+                top: 2rem;
+                left: 2rem;
+                color: white;
+                font-size: 1.5rem;
+                opacity: 0.8;
+                z-index: 1000;
             }
 
             .bubble-title {
@@ -66,103 +159,302 @@
                 white-space: nowrap;
                 opacity: 0;
                 transition: opacity 0.3s;
-                background: rgba(0, 0, 0, 0.8);
-                padding: 4px 8px;
-                border-radius: 4px;
             }
 
-            .bubble:hover .bubble-title,
-            .bubble:focus-visible .bubble-title {
+            .bubble:hover .bubble-title {
                 opacity: 1;
             }
 
-            .skip-link {
-                position: absolute;
-                left: -9999px;
-                z-index: 999;
-                padding: 1em;
-                background-color: white;
-                color: black;
-                text-decoration: none;
+            .close-button {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 1001;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                transition: background 0.3s;
             }
 
-            .skip-link:focus {
-                left: 50%;
-                transform: translateX(-50%);
+            .close-button:hover {
+                background: rgba(255, 255, 255, 0.3);
             }
 
-            /* Navigation styles */
-            .menu--bottom--right {
-                z-index: 1000;
+            .close-button.visible {
+                display: flex;
             }
         </style>
     </head>
     <body>
-        <a href="#main" class="skip-link">Skip to main content</a>
+        <script
+            async
+            src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+        ></script>
 
-        <main id="main">
-            <h1 class="sr-only">Portfolio Gallery</h1>
-            <div
-                class="container"
-                id="bubbleContainer"
-                role="region"
-                aria-label="Interactive website gallery"
-            >
-                <!-- Bubbles will be dynamically added here -->
-            </div>
-        </main>
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://threejs.org/build/three.module.js",
+                    "three/addons/": "https://threejs.org/examples/jsm/"
+                }
+            }
+        </script>
 
-        <nav
-            class="menu--bottom--right"
-            role="navigation"
-            aria-label="Main navigation"
-        >
+        <script type="module">
+            import * as THREE from "three";
+
+            import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+
+            import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+            import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+            import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+            import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+            import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+            import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
+
+            import { FontLoader } from "three/addons/loaders/FontLoader.js";
+            import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+            // declarations
+
+            let camera, scene, renderer, composer;
+            let cube,
+                foregroundObj,
+                midgroundObj,
+                backgroundObj,
+                documentObj,
+                foregroundMaterial,
+                midgroundMaterial,
+                backgroundMaterial,
+                documentMaterial,
+                textObj,
+                textGeometry,
+                textMaterial;
+
+            let cubeCamera, cubeRenderTarget;
+
+            let mouseX = 0,
+                mouseY = 0;
+
+            let windowHalfX = window.innerWidth / 2;
+            let windowHalfY = window.innerHeight / 2;
+
+            init();
+
+            //init
+
+            function init() {
+                //scope
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setAnimationLoop(animation);
+                renderer.outputEncoding = THREE.sRGBEncoding;
+                renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                renderer.toneMappingExposure = 1.3;
+                document.body.appendChild(renderer.domElement);
+
+                document.addEventListener("mousemove", onDocumentMouseMove);
+
+                window.addEventListener("resize", onWindowResized);
+
+                // camera
+
+                camera = new THREE.PerspectiveCamera(
+                    90,
+                    window.innerWidth / window.innerHeight,
+                    1,
+                    1000,
+                );
+                camera.position.z = 70;
+
+                scene = new THREE.Scene();
+
+                // hdri
+
+                new RGBELoader()
+                    .setPath("/IORI/assets/")
+                    .load("websitesBackground.hdr", function (texture) {
+                        texture.mapping =
+                            THREE.EquirectangularReflectionMapping;
+
+                        scene.background = texture;
+                        scene.environment = texture;
+                    });
+
+                // objects
+
+                const documentTexture = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/one-page.png",
+                );
+
+                documentMaterial = new THREE.MeshStandardMaterial({
+                    map: documentTexture,
+                    emissiveMap: documentTexture,
+                    emissive: 0.5,
+                });
+                const foregroundTexture = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/frontMap.jpg",
+                );
+                const foregroundAplha = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/frontAlpha.jpg",
+                );
+
+                foregroundMaterial = new THREE.MeshStandardMaterial({
+                    transparent: true,
+                    alphaMap: foregroundAplha,
+                    map: foregroundTexture,
+                    emissiveMap: foregroundTexture,
+                    emissive: 0.5,
+                });
+                const midgroundTexture = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/midMap.jpg",
+                );
+                const midgroundAlpha = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/midAlpha.jpg",
+                );
+
+                midgroundMaterial = new THREE.MeshStandardMaterial({
+                    transparent: true,
+                    alphaMap: midgroundAlpha,
+                    map: midgroundTexture,
+                    emissiveMap: midgroundTexture,
+                    emissive: 0.5,
+                });
+                const backgroundTexture = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/backMap.jpg",
+                );
+                const backgroundAlpha = new THREE.TextureLoader().load(
+                    "/IORI/assets/websites/backAlpha.jpg",
+                );
+
+                backgroundMaterial = new THREE.MeshStandardMaterial({
+                    transparent: true,
+                    alphaMap: backgroundAlpha,
+                    map: backgroundTexture,
+                    emissiveMap: backgroundTexture,
+                    emissive: 0.5,
+                });
+
+                documentObj = new THREE.Mesh(
+                    new THREE.PlaneGeometry(210 * 0.25, 297 * 0.25),
+                    documentMaterial,
+                );
+                scene.add(documentObj);
+                documentObj.position.z = -25;
+                documentObj.position.x = 55;
+                documentObj.position.y = 15;
+
+                foregroundObj = new THREE.Mesh(
+                    new THREE.PlaneGeometry(150, 150),
+                    foregroundMaterial,
+                );
+                scene.add(foregroundObj);
+                foregroundObj.position.z = 10;
+
+                midgroundObj = new THREE.Mesh(
+                    new THREE.PlaneGeometry(250, 250),
+                    midgroundMaterial,
+                );
+                scene.add(midgroundObj);
+                midgroundObj.position.y = 20;
+                midgroundObj.position.z = -50;
+
+                backgroundObj = new THREE.Mesh(
+                    new THREE.PlaneGeometry(400, 400),
+                    backgroundMaterial,
+                );
+                scene.add(backgroundObj);
+                backgroundObj.position.y = 50;
+                backgroundObj.position.z = -200;
+
+                composer = new EffectComposer(renderer);
+                composer.addPass(new RenderPass(scene, camera));
+
+                //
+            }
+
+            function onWindowResized() {
+                windowHalfX = window.innerWidth / 2;
+                windowHalfY = window.innerHeight / 2;
+
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                composer.setSize(window.innerWidth, window.innerHeight);
+
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            }
+
+            function onDocumentMouseMove(event) {
+                mouseX = (event.clientX - windowHalfX) / 2;
+                mouseY = (event.clientY - windowHalfY) / 2;
+            }
+
+            function animation(msTime) {
+                // fps update
+
+                camera.position.x += (-mouseX / 50 - camera.position.x) * 0.01;
+                camera.position.y += (mouseY / 50 - camera.position.y) * 0.02;
+
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+
+                composer.render();
+            }
+        </script>
+        <nav class="menu--bottom--right" role="navigation">
             <div class="menuToggle">
-                <button
-                    type="button"
-                    aria-expanded="false"
-                    aria-controls="menuItems"
-                    class="menu-button"
-                >
-                    <span class="sr-only">Toggle menu</span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </button>
-                <ul class="menuItem" id="menuItems">
-                    <li><a href="./index.html">Home</a></li>
-                    <li>
-                        <a href="./portfolio.html" aria-current="page"
-                            >Portfolio</a
-                        >
-                    </li>
-                    <li><a href="./shop.html">Shop</a></li>
-                    <li><a href="./info.html">Info</a></li>
+                <input type="checkbox" />
+                <span></span>
+                <span></span>
+                <span></span>
+                <ul class="menuItem">
+                    <li><a href="./index.html">home</a></li>
+                    <li><a href="./portfolio.html">portfolio</a></li>
+                    <li><a href="./shop.html">shop</a></li>
+                    <li><a href="./info.html">info</a></li>
                 </ul>
             </div>
         </nav>
+        <div class="container" id="bubbleContainer"></div>
+        <button class="close-button" id="closeButton">×</button>
 
         <script>
             class BubblePortfolio {
                 constructor() {
                     this.container = document.getElementById("bubbleContainer");
-                    // Removed duplicates and combined similar entries
+                    this.closeButton = document.getElementById("closeButton");
+                    this.bubbles = [];
                     this.websites = [
-                        {
-                            url: "https://zsprodeti.cz/",
-                            title: "ZS Pro Deti - Educational Platform",
-                        },
-                        {
-                            url: "https://flashtones.cz/",
-                            title: "Flashtones - Music Website",
-                        },
-                        {
-                            url: "https://livesupp.com/",
-                            title: "LiveSupp - Support Platform",
-                        },
+                        { url: "https://zsprodeti.cz/", title: "ZS Pro Deti" },
+                        { url: "https://flashtones.cz/", title: "Flashtones" },
+                        { url: "https://livesupp.com/", title: "LiveSupp" },
                         {
                             url: "https://vilma-kono.glitch.me/",
-                            title: "Vilma Kono Portfolio",
+                            title: "Vilma Kono",
+                        },
+                        {
+                            url: "https://andrea-sokova.glitch.me/",
+                            title: "Andrea Sokova",
+                        },
+                        {
+                            url: "https://flame-simulation.glitch.me/",
+                            title: "Flame sim",
+                        },
+                        {
+                            url: "https://heartbreaking-happy-pluto.glitch.me/",
+                            title: "kalivoda",
                         },
                         {
                             url: "https://tin-imported-dungeon.glitch.me/",
@@ -170,14 +462,13 @@
                         },
                         {
                             url: "https://jarojaro.glitch.me/",
-                            title: "Jaroslav Jaro Portfolio",
+                            title: "Jaroslav Jaro",
                         },
                         {
                             url: "https://kucharkybezdomova.glitch.me/",
                             title: "Kucharky Bez Domova",
                         },
                     ];
-                    this.bubbles = [];
                     this.init();
                     this.animate();
                     this.setupEventListeners();
@@ -186,81 +477,83 @@
                 init() {
                     this.websites.forEach((site, i) => {
                         const size = Math.random() * (180 - 140) + 140;
-                        const bubble = document.createElement("div");
+                        const bubble = document.createElement("a");
                         bubble.className = "bubble";
-                        bubble.setAttribute("role", "button");
-                        bubble.setAttribute("tabindex", "0");
-                        bubble.setAttribute(
-                            "aria-label",
-                            `Visit ${site.title}`,
-                        );
-                        bubble.style.width = `${size}px`;
-                        bubble.style.height = `${size}px`;
+                        bubble.style.width = size + "px";
+                        bubble.style.height = size + "px";
+                        bubble.href = "javascript:void(0)"; // Prevent default anchor behavior
 
-                        const preview = document.createElement("img");
-                        preview.className = "bubble-preview";
-                        preview.src = `/api/placeholder/400/400`;
-                        preview.alt = `Preview of ${site.title}`;
-                        preview.loading = "lazy";
-                        bubble.appendChild(preview);
+                        const iframe = document.createElement("iframe");
+                        iframe.src = site.url;
+                        bubble.appendChild(iframe);
 
                         const title = document.createElement("div");
                         title.className = "bubble-title";
                         title.textContent = site.title;
-                        title.setAttribute("aria-hidden", "true");
                         bubble.appendChild(title);
 
                         this.container.appendChild(bubble);
 
                         this.bubbles.push({
                             element: bubble,
-                            url: site.url,
+                            iframe: iframe,
                             x: Math.random() * (window.innerWidth - size),
                             y: Math.random() * (window.innerHeight - size),
                             speedX: (Math.random() - 0.5) * 2,
                             speedY: (Math.random() - 0.5) * 2,
-                            size,
+                            size: size,
                             mass: size,
+                            originalSize: size,
+                            originalX: 0,
+                            originalY: 0,
                         });
                     });
                 }
 
                 setupEventListeners() {
                     this.bubbles.forEach((bubble) => {
-                        const handleActivation = () => {
-                            window.location.href = bubble.url;
-                        };
-
-                        bubble.element.addEventListener(
-                            "click",
-                            handleActivation,
-                        );
-                        bubble.element.addEventListener("keydown", (e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                handleActivation();
+                        bubble.element.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            if (
+                                !bubble.element.classList.contains("fullscreen")
+                            ) {
+                                this.expandBubble(bubble);
                             }
                         });
                     });
 
-                    // Handle resize
-                    let resizeTimeout;
-                    window.addEventListener("resize", () => {
-                        clearTimeout(resizeTimeout);
-                        resizeTimeout = setTimeout(() => {
-                            this.handleResize();
-                        }, 250);
+                    this.closeButton.addEventListener("click", () => {
+                        this.bubbles.forEach((bubble) => {
+                            if (
+                                bubble.element.classList.contains("fullscreen")
+                            ) {
+                                this.collapseBubble(bubble);
+                            }
+                        });
                     });
                 }
 
-                handleResize() {
-                    const width = window.innerWidth;
-                    const height = window.innerHeight;
+                expandBubble(bubble) {
+                    // Store original position
+                    const rect = bubble.element.getBoundingClientRect();
+                    bubble.originalX = rect.left;
+                    bubble.originalY = rect.top;
+                    bubble.element.style.transform = "none";
 
-                    this.bubbles.forEach((bubble) => {
-                        bubble.x = Math.min(bubble.x, width - bubble.size);
-                        bubble.y = Math.min(bubble.y, height - bubble.size);
-                    });
+                    // Pause animation for this bubble
+                    bubble.isExpanded = true;
+
+                    // Add fullscreen class
+                    bubble.element.classList.add("fullscreen");
+                    this.closeButton.classList.add("visible");
+                }
+
+                collapseBubble(bubble) {
+                    bubble.element.classList.remove("fullscreen");
+                    this.closeButton.classList.remove("visible");
+
+                    // Resume animation
+                    bubble.isExpanded = false;
                 }
 
                 checkCollision(b1, b2) {
@@ -274,8 +567,6 @@
                     const dx = b2.x - b1.x;
                     const dy = b2.y - b1.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance === 0) return;
 
                     const nx = dx / distance;
                     const ny = dy / distance;
@@ -301,43 +592,41 @@
 
                 animate() {
                     this.bubbles.forEach((bubble) => {
-                        bubble.x += bubble.speedX;
-                        bubble.y += bubble.speedY;
+                        if (!bubble.isExpanded) {
+                            bubble.x += bubble.speedX;
+                            bubble.y += bubble.speedY;
 
-                        // Boundary collision
-                        if (
-                            bubble.x <= 0 ||
-                            bubble.x >= window.innerWidth - bubble.size
-                        ) {
-                            bubble.speedX *= -0.8;
-                            bubble.x =
-                                bubble.x <= 0
-                                    ? 0
-                                    : window.innerWidth - bubble.size;
+                            if (
+                                bubble.x <= 0 ||
+                                bubble.x >= window.innerWidth - bubble.size
+                            ) {
+                                bubble.speedX *= -0.8;
+                                bubble.x =
+                                    bubble.x <= 0
+                                        ? 0
+                                        : window.innerWidth - bubble.size;
+                            }
+                            if (
+                                bubble.y <= 0 ||
+                                bubble.y >= window.innerHeight - bubble.size
+                            ) {
+                                bubble.speedY *= -0.8;
+                                bubble.y =
+                                    bubble.y <= 0
+                                        ? 0
+                                        : window.innerHeight - bubble.size;
+                            }
+
+                            bubble.speedX *= 0.995;
+                            bubble.speedY *= 0.995;
                         }
-                        if (
-                            bubble.y <= 0 ||
-                            bubble.y >= window.innerHeight - bubble.size
-                        ) {
-                            bubble.speedY *= -0.8;
-                            bubble.y =
-                                bubble.y <= 0
-                                    ? 0
-                                    : window.innerHeight - bubble.size;
-                        }
-
-                        // Apply friction
-                        bubble.speedX *= 0.995;
-                        bubble.speedY *= 0.995;
-
-                        // Update position
-                        bubble.element.style.transform = `translate(${bubble.x}px, ${bubble.y}px)`;
                     });
 
-                    // Check collisions between bubbles
                     for (let i = 0; i < this.bubbles.length; i++) {
                         for (let j = i + 1; j < this.bubbles.length; j++) {
                             if (
+                                !this.bubbles[i].isExpanded &&
+                                !this.bubbles[j].isExpanded &&
                                 this.checkCollision(
                                     this.bubbles[i],
                                     this.bubbles[j],
@@ -351,11 +640,17 @@
                         }
                     }
 
+                    this.bubbles.forEach((bubble) => {
+                        if (!bubble.isExpanded) {
+                            bubble.element.style.left = bubble.x + "px";
+                            bubble.element.style.top = bubble.y + "px";
+                        }
+                    });
+
                     requestAnimationFrame(() => this.animate());
                 }
             }
 
-            // Initialize after DOM content is loaded
             document.addEventListener("DOMContentLoaded", () => {
                 new BubblePortfolio();
             });
