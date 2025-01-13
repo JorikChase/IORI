@@ -127,7 +127,7 @@
         new GLTFLoader()
             .setKTX2Loader(ktx2Loader)
             .setMeshoptDecoder(MeshoptDecoder)
-            .load("/IORI/images/facecap.glb", (gltf) => {
+            .load("/IORI/assets/facecap.glb", (gltf) => {
                 const mesh = gltf.scene.children[0];
                 scene.add(mesh);
 
