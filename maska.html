@@ -116,8 +116,7 @@
             .detectSupport(renderer);
 
         const videoElement = document.createElement("video");
-        videoElement.src =
-            "https://cdn.glitch.me/e4631427-87ee-420d-ba2f-6ac222aa598b/autoportrait.mp4?v=1736802925069"; // Update the path to your actual video file
+        videoElement.src = "https://zsprodeti.cz/images/autoportrait.mp4"; // Update the path to your actual video file
         videoElement.loop = true;
         videoElement.muted = true;
         videoElement.play();
@@ -128,7 +127,7 @@
         new GLTFLoader()
             .setKTX2Loader(ktx2Loader)
             .setMeshoptDecoder(MeshoptDecoder)
-            .load("/IORI/assets/facecap.glb", (gltf) => {
+            .load("https://zsprodeti.cz/images/facecap.glb", (gltf) => {
                 const mesh = gltf.scene.children[0];
                 scene.add(mesh);
 
