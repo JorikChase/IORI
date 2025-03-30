@@ -1,337 +1,321 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        />
+        <link rel="icon" type="image/x-icon" href="/IORI/3die.ico" />
+        <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
+        <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
+        <style>
+            * {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            }
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="/IORI/3die.ico" />
-    <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
-    <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
-    <style>
-        * {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            
-        }
+            body,
+            html {
+                margin: 0;
+                scroll-behavior: smooth;
+                background-color: #080a09;
+            }
 
-        body,
-        html {
-            margin: 0;
-            scroll-behavior: smooth;
-            background-color: #080a09;
-        }
-
-        #content {
-            position: absolute;
-            top: 60px;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-column-gap: 30px;
-            grid-template-rows: 1fr 1fr 1fr;
-            grid-row-gap: 30px;
-            transition: all .25s ease-in-out;
-        }
-
-        #c {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .list-item {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-
-        .list-item:hover {}
-
-        .list-item>div:nth-child(1) {
-            height: 20vh;
-            width: 20vh;
-            touch-action: none;
-            -ms-touch-action: none;
-            transition: all 0.25s ease-in-out;
-          }
-          
-          .list-item>div:nth-child(1):hover {
-            transform: scale(1.3);
-            border: 1px rgba(169, 169, 169, 0.138) solid;
-            border-radius: 10px;
-          }
-          
-          .list-item>a {
-            position: relative;
-            left: -75px;
-            bottom: 0;
-            color: #e3e3e3;
-            font-size: 30px;
-            width: 200px;
-            transition: all 0.25s ease-in-out;
-            
-          }
-          .description{
-            z-index: 2;
-            text-decoration: none;
-            color: #e3e3e3;
-            font-size: 30px;
-            transition: all 0.25s ease-in-out;
-
-          }
-          .description:hover{
-            color: #ededed;
-            font-size: 33px;
-
-          }
-          .list-item:hover>div:nth-child(2) {
-              color: #fbfbfb;
-              font-size: 33px;
-          }
-          
-          @media (orientation: portrait) {
             #content {
-            position: absolute;
-            top: 60px;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-column-gap: none;
-            grid-row-gap: 30px;
-            transition: all .25s ease-in-out;
-        }
-        }
-    </style>
-</head>
+                position: absolute;
+                top: 60px;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-column-gap: 30px;
+                grid-template-rows: 1fr 1fr 1fr;
+                grid-row-gap: 30px;
+                transition: all 0.25s ease-in-out;
+            }
 
-<body>
+            #c {
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
 
-    <canvas id="c"></canvas>
+            .list-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 15px;
+            }
 
-    <div id="content">
-    </div>
+            .list-item:hover {
+            }
 
-    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+            .list-item > div:nth-child(1) {
+                height: 20vh;
+                width: 20vh;
+                touch-action: none;
+                -ms-touch-action: none;
+                transition: all 0.25s ease-in-out;
+            }
 
-    <script type="importmap">
-    {
-      "imports": {
-        "three": "https://threejs.org/build/three.module.js",
-        "three/addons/": "https://threejs.org/examples/jsm/"
-      }
-    }
-  </script>
+            .list-item > div:nth-child(1):hover {
+                transform: scale(1.3);
+                border: 1px rgba(169, 169, 169, 0.138) solid;
+                border-radius: 10px;
+            }
 
-    <script type="module">
-        import * as THREE from "three";
+            .list-item > a {
+                position: relative;
+                left: -75px;
+                bottom: 0;
+                color: #e3e3e3;
+                font-size: 30px;
+                width: 200px;
+                transition: all 0.25s ease-in-out;
+            }
+            .description {
+                z-index: 2;
+                text-decoration: none;
+                color: #e3e3e3;
+                font-size: 30px;
+                transition: all 0.25s ease-in-out;
+            }
+            .description:hover {
+                color: #ededed;
+                font-size: 33px;
+            }
+            .list-item:hover > div:nth-child(2) {
+                color: #fbfbfb;
+                font-size: 33px;
+            }
 
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
-        import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+            @media (orientation: portrait) {
+                #content {
+                    position: absolute;
+                    top: 60px;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-column-gap: none;
+                    grid-row-gap: 30px;
+                    transition: all 0.25s ease-in-out;
+                }
+            }
+        </style>
+    </head>
 
-        let canvas, renderer;
+    <body>
+        <canvas id="c"></canvas>
 
-        const scenes = [];
+        <div id="content"></div>
 
-        init();
-        animate();
+        <script
+            async
+            src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+        ></script>
 
-        function init() {
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://threejs.org/build/three.module.js",
+                    "three/addons/": "https://threejs.org/examples/jsm/"
+                }
+            }
+        </script>
 
-            canvas = document.getElementById('c');
+        <script type="module">
+            import * as THREE from "three";
 
-            /* const geometries = [
+            import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+            import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
+            import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+            let canvas, renderer;
+
+            const scenes = [];
+
+            init();
+            animate();
+
+            function init() {
+                canvas = document.getElementById("c");
+
+                /* const geometries = [
                 new THREE.BoxGeometry(1, 1, 1),
                 new THREE.SphereGeometry(0.5, 12, 8),
                 new THREE.DodecahedronGeometry(0.5),
                 new THREE.CylinderGeometry(0.5, 0.5, 1, 12)
             ]; */
 
-            const content = document.getElementById('content');
+                const content = document.getElementById("content");
 
-            for (let i = 0; i < 9; i++) {
+                for (let i = 0; i < 9; i++) {
+                    const scene = new THREE.Scene();
 
-                const scene = new THREE.Scene();
+                    // make a list item
+                    const element = document.createElement("div");
+                    element.className = "list-item";
+                    element.href = "#" + i;
 
-                // make a list item
-                const element = document.createElement('div');
-                element.className = 'list-item';
-                element.href = '#' +i;
+                    const sceneElement = document.createElement("div");
+                    element.appendChild(sceneElement);
 
-                const sceneElement = document.createElement('div');
-                element.appendChild(sceneElement);
+                    const descriptionElement = document.createElement("a");
+                    descriptionElement.innerText = "Object " + (i + 1);
+                    descriptionElement.className = "description";
+                    descriptionElement.href =
+                        "https://buy.stripe.com/3cs15bdbkdhk8Bq6op#" + i;
+                    element.appendChild(descriptionElement);
 
-                const descriptionElement = document.createElement('a');
-                descriptionElement.innerText = 'Object ' + (i + 1);
-                descriptionElement.className = 'description';
-                descriptionElement.href = 'https://buy.stripe.com/3cs15bdbkdhk8Bq6op#' + i;
-                element.appendChild(descriptionElement);
+                    // the element that represents the area we want to render the scene
+                    scene.userData.element = sceneElement;
+                    content.appendChild(element);
 
-                // the element that represents the area we want to render the scene
-                scene.userData.element = sceneElement;
-                content.appendChild(element);
+                    const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+                    camera.position.z = 2;
+                    scene.userData.camera = camera;
 
-                const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
-                camera.position.z = 2;
-                scene.userData.camera = camera;
+                    const controls = new OrbitControls(
+                        scene.userData.camera,
+                        scene.userData.element,
+                    );
+                    controls.minDistance = 2;
+                    controls.maxDistance = 5;
+                    controls.enablePan = false;
+                    controls.enableZoom = false;
+                    scene.userData.controls = controls;
 
-                const controls = new OrbitControls(scene.userData.camera, scene.userData.element);
-                controls.minDistance = 2;
-                controls.maxDistance = 5;
-                controls.enablePan = false;
-                controls.enableZoom = false;
-                scene.userData.controls = controls;
+                    let material = new MTLLoader()
+                        .setPath("/IORI/assets/obj/shop/")
+                        .load("object" + i + ".mtl", function (materials) {
+                            materials.preload();
 
-                let material = new MTLLoader()
-                    .setPath('/IORI/assets/obj/shop/')
-                    .load('object' + i + '.mtl', function (materials) {
+                            let geometry = new OBJLoader()
+                                .setMaterials(materials)
+                                .setPath("/IORI/assets/obj/shop/")
+                                .load("object" + i + ".obj", function (object) {
+                                    object.scale.setScalar(0.4);
 
-                        materials.preload();
+                                    scene.add(object);
 
-                        let geometry = new OBJLoader()
-                            .setMaterials(materials)
-                            .setPath('/IORI/assets/obj/shop/')
-                            .load('object' + i + '.obj', function (object) {
+                                    scene.add(
+                                        new THREE.Mesh(geometry, material),
+                                    );
 
-                                object.scale.setScalar(.4);
+                                    scene.add(
+                                        new THREE.HemisphereLight(
+                                            0xaaaaaa,
+                                            0x444444,
+                                            3,
+                                        ),
+                                    );
 
-                                scene.add(object);
+                                    const light = new THREE.DirectionalLight(
+                                        0xffffff,
+                                        1.5,
+                                    );
+                                    light.position.set(1, 1, 1);
+                                    scene.add(light);
 
-                                scene.add(new THREE.Mesh(geometry, material));
-
-                                scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444, 3));
-
-                                const light = new THREE.DirectionalLight(0xffffff, 1.5);
-                                light.position.set(1, 1, 1);
-                                scene.add(light);
-
-                                scenes.push(scene);
-
-                            });
-
-                    });
-
-                // add one random mesh to each scene
-                /* const geometry = geometries[geometries.length * Math.random() | 0];
-
-                const material = new THREE.MeshStandardMaterial({
-
-                    color: new THREE.Color().setHSL(Math.random(), 1, 0.75, THREE.SRGBColorSpace),
-                    roughness: 0.5,
-                    metalness: 0,
-                    flatShading: true
-
-                }); */
-
-
-
-            }
-
-
-
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-            renderer.setClearColor(0xffffff, 1);
-            renderer.setPixelRatio(window.devicePixelRatio);
-
-        }
-
-        function updateSize() {
-
-            const width = canvas.clientWidth;
-            const height = canvas.clientHeight;
-
-            if (canvas.width !== width || canvas.height !== height) {
-
-                renderer.setSize(width, height, false);
-
-            }
-
-        }
-
-        function animate() {
-
-            render();
-            requestAnimationFrame(animate);
-
-        }
-
-        function render() {
-
-            updateSize();
-
-            canvas.style.transform = `translateY(${window.scrollY}px)`;
-
-            renderer.setClearColor(0x080a09);
-            renderer.setScissorTest(false);
-            renderer.clear();
-
-            renderer.setClearColor(0x080a09);
-            renderer.setScissorTest(true);
-
-            scenes.forEach(function (scene) {
-
-                // so something moves
-                scene.children[0].rotation.y = Date.now() * 0.001;
-
-                // get the element that is a place holder for where we want to
-                // draw the scene
-                const element = scene.userData.element;
-
-                // get its position relative to the page's viewport
-                const rect = element.getBoundingClientRect();
-
-                // check if it's offscreen. If so skip it
-                if (rect.bottom < 0 || rect.top > renderer.domElement.clientHeight ||
-                    rect.right < 0 || rect.left > renderer.domElement.clientWidth) {
-
-                    return; // it's off screen
-
+                                    scenes.push(scene);
+                                });
+                        });
                 }
 
-                // set the viewport
-                const width = rect.right - rect.left;
-                const height = rect.bottom - rect.top;
-                const left = rect.left;
-                const bottom = renderer.domElement.clientHeight - rect.bottom;
+                renderer = new THREE.WebGLRenderer({
+                    canvas: canvas,
+                    antialias: true,
+                });
+                renderer.setClearColor(0xffffff, 1);
+                renderer.setPixelRatio(window.devicePixelRatio);
+            }
 
-                renderer.setViewport(left, bottom, width, height);
-                renderer.setScissor(left, bottom, width, height);
+            function updateSize() {
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
 
-                const camera = scene.userData.camera;
+                if (canvas.width !== width || canvas.height !== height) {
+                    renderer.setSize(width, height, false);
+                }
+            }
 
-                //camera.aspect = width / height; // not changing in this example
-                //camera.updateProjectionMatrix();
+            function animate() {
+                render();
+                requestAnimationFrame(animate);
+            }
 
-                //scene.userData.controls.update();
+            function render() {
+                updateSize();
 
-                renderer.render(scene, camera);
+                canvas.style.transform = `translateY(${window.scrollY}px)`;
 
-            });
+                renderer.setClearColor(0x080a09);
+                renderer.setScissorTest(false);
+                renderer.clear();
 
-        }
+                renderer.setClearColor(0x080a09);
+                renderer.setScissorTest(true);
 
-    </script>
-    <nav class="menu--bottom--right" role="navigation">
-      <div class="menuToggle">
-        <input type="checkbox" />
-        <span></span>
-        <span></span>
-        <span></span>
-        <ul class="menuItem">
-          <li><a href="./index.html">home</a></li>
-          <li><a href="./portfolio.html">portfolio</a></li>
-          <li><a href="./info.html">info</a></li>
-        </ul>
-      </div>
-    </nav>
+                scenes.forEach(function (scene) {
+                    // so something moves
+                    scene.children[0].rotation.y = Date.now() * 0.001;
 
-</body>
+                    // get the element that is a place holder for where we want to
+                    // draw the scene
+                    const element = scene.userData.element;
 
+                    // get its position relative to the page's viewport
+                    const rect = element.getBoundingClientRect();
+
+                    // check if it's offscreen. If so skip it
+                    if (
+                        rect.bottom < 0 ||
+                        rect.top > renderer.domElement.clientHeight ||
+                        rect.right < 0 ||
+                        rect.left > renderer.domElement.clientWidth
+                    ) {
+                        return; // it's off screen
+                    }
+
+                    // set the viewport
+                    const width = rect.right - rect.left;
+                    const height = rect.bottom - rect.top;
+                    const left = rect.left;
+                    const bottom =
+                        renderer.domElement.clientHeight - rect.bottom;
+
+                    renderer.setViewport(left, bottom, width, height);
+                    renderer.setScissor(left, bottom, width, height);
+
+                    const camera = scene.userData.camera;
+
+                    //camera.aspect = width / height; // not changing in this example
+                    //camera.updateProjectionMatrix();
+
+                    //scene.userData.controls.update();
+
+                    renderer.render(scene, camera);
+                });
+            }
+        </script>
+        <nav class="menu--bottom--right" role="navigation">
+            <div class="menuToggle">
+                <input type="checkbox" />
+                <span></span>
+                <span></span>
+                <span></span>
+                <ul class="menuItem">
+                    <li><a href="./index.html">home</a></li>
+                    <li><a href="./portfolio.html">portfolio</a></li>
+                    <li><a href="./info.html">info</a></li>
+                </ul>
+            </div>
+        </nav>
+    </body>
 </html>
