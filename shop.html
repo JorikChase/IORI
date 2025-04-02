@@ -1,321 +1,318 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Three.js GLB Gallery Grid</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+            rel="stylesheet"
         />
-        <link rel="icon" type="image/x-icon" href="/IORI/3die.ico" />
-        <link type="text/css" rel="stylesheet" href="/IORI/assets/main.css" />
-        <link type="text/css" rel="stylesheet" href="/IORI/assets/burger.css" />
         <style>
-            * {
-                box-sizing: border-box;
-                -moz-box-sizing: border-box;
-            }
-
-            body,
-            html {
+            body {
+                font-family: "Inter", sans-serif;
                 margin: 0;
-                scroll-behavior: smooth;
-                background-color: #080a09;
+                background-color: black; /* Light gray background */
+                color: #333;
+                overflow-x: hidden; /* Prevent horizontal scroll */
             }
-
-            #content {
-                position: absolute;
-                top: 60px;
+            /* Style for the container holding each scene */
+            .scene-container {
+                position: relative; /* Needed for loading indicator positioning */
                 width: 100%;
-                height: 100%;
-                z-index: 1;
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-column-gap: 30px;
-                grid-template-rows: 1fr 1fr 1fr;
-                grid-row-gap: 30px;
-                transition: all 0.25s ease-in-out;
+                padding-bottom: 100%; /* Creates a square aspect ratio */
+                background-color: black; /* Placeholder background */
+                border-radius: 0.5rem; /* Rounded corners */
+                overflow: hidden; /* Clip canvas content */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
             }
-
-            #c {
+            /* Style for the canvas element */
+            .scene-canvas {
                 position: absolute;
+                top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
+                display: block; /* Remove extra space below canvas */
+                border-radius: 0.5rem; /* Match container rounding */
             }
-
-            .list-item {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                padding: 15px;
+            /* Loading Indicator */
+            .loading-indicator {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #555;
+                font-size: 0.875rem; /* text-sm */
             }
-
-            .list-item:hover {
-            }
-
-            .list-item > div:nth-child(1) {
-                height: 20vh;
-                width: 20vh;
-                touch-action: none;
-                -ms-touch-action: none;
-                transition: all 0.25s ease-in-out;
-            }
-
-            .list-item > div:nth-child(1):hover {
-                transform: scale(1.3);
-                border: 1px rgba(169, 169, 169, 0.138) solid;
-                border-radius: 10px;
-            }
-
-            .list-item > a {
-                position: relative;
-                left: -75px;
-                bottom: 0;
-                color: #e3e3e3;
-                font-size: 30px;
-                width: 200px;
-                transition: all 0.25s ease-in-out;
-            }
-            .description {
-                z-index: 2;
-                text-decoration: none;
-                color: #e3e3e3;
-                font-size: 30px;
-                transition: all 0.25s ease-in-out;
-            }
-            .description:hover {
-                color: #ededed;
-                font-size: 33px;
-            }
-            .list-item:hover > div:nth-child(2) {
-                color: #fbfbfb;
-                font-size: 33px;
-            }
-
-            @media (orientation: portrait) {
-                #content {
-                    position: absolute;
-                    top: 60px;
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1;
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    grid-column-gap: none;
-                    grid-row-gap: 30px;
-                    transition: all 0.25s ease-in-out;
-                }
+            /* Hide loading indicator when canvas is ready */
+            .scene-canvas:not(:empty) + .loading-indicator {
+                display: none;
             }
         </style>
     </head>
+    <body class="">
+        <div class="container mx-auto p-4 sm:p-8">
+            <h1
+                class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 text-gray-800"
+            >
+                3D GLB Model Gallery
+            </h1>
 
-    <body>
-        <canvas id="c"></canvas>
-
-        <div id="content"></div>
-
-        <script
-            async
-            src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
-        ></script>
+            <div
+                id="gallery-grid"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+            ></div>
+        </div>
 
         <script type="importmap">
             {
                 "imports": {
-                    "three": "https://threejs.org/build/three.module.js",
-                    "three/addons/": "https://threejs.org/examples/jsm/"
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
                 }
             }
         </script>
 
         <script type="module">
+            // Import necessary modules from Three.js CDN
             import * as THREE from "three";
-
             import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-            import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
-            import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+            import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+            import { RGBELoader } from "three/addons/loaders/RGBELoader.js"; // For environment maps
 
-            let canvas, renderer;
+            // --- Configuration ---
+            const modelUrls = [
+                // Using models from the official Three.js repository or Khronos Group samples
+                // Ensure these URLs remain valid. Provide fallbacks or handle errors if they change.
+                "./assets/shop/labradorit.glb",
+                "./assets/shop/cottage.glb",
+                "./assets/shop/magical.glb",
+                "./assets/shop/crystal.glb", // Note: This one is .gltf, not .glb, requires linked resources
+                "./assets/shop/iridescent.glb", // Note: This one is .gltf, not .glb, requires linked resources
+                // Add more valid GLB/GLTF URLs here
+            ];
 
-            const scenes = [];
+            // Optional: Use an HDRI environment map for better lighting and reflections
+            const hdrEnvironmentUrl =
+                "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/equirectangular/venice_sunset_1k.hdr"; // Example HDR
 
-            init();
-            animate();
+            const galleryGrid = document.getElementById("gallery-grid");
+            const gltfLoader = new GLTFLoader();
+            const rgbeLoader = new RGBELoader();
+            let environmentMap = null;
 
-            function init() {
-                canvas = document.getElementById("c");
-
-                /* const geometries = [
-                new THREE.BoxGeometry(1, 1, 1),
-                new THREE.SphereGeometry(0.5, 12, 8),
-                new THREE.DodecahedronGeometry(0.5),
-                new THREE.CylinderGeometry(0.5, 0.5, 1, 12)
-            ]; */
-
-                const content = document.getElementById("content");
-
-                for (let i = 0; i < 9; i++) {
-                    const scene = new THREE.Scene();
-
-                    // make a list item
-                    const element = document.createElement("div");
-                    element.className = "list-item";
-                    element.href = "#" + i;
-
-                    const sceneElement = document.createElement("div");
-                    element.appendChild(sceneElement);
-
-                    const descriptionElement = document.createElement("a");
-                    descriptionElement.innerText = "Object " + (i + 1);
-                    descriptionElement.className = "description";
-                    descriptionElement.href =
-                        "https://buy.stripe.com/3cs15bdbkdhk8Bq6op#" + i;
-                    element.appendChild(descriptionElement);
-
-                    // the element that represents the area we want to render the scene
-                    scene.userData.element = sceneElement;
-                    content.appendChild(element);
-
-                    const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
-                    camera.position.z = 2;
-                    scene.userData.camera = camera;
-
-                    const controls = new OrbitControls(
-                        scene.userData.camera,
-                        scene.userData.element,
-                    );
-                    controls.minDistance = 2;
-                    controls.maxDistance = 5;
-                    controls.enablePan = false;
-                    controls.enableZoom = false;
-                    scene.userData.controls = controls;
-
-                    let material = new MTLLoader()
-                        .setPath("/IORI/assets/obj/shop/")
-                        .load("object" + i + ".mtl", function (materials) {
-                            materials.preload();
-
-                            let geometry = new OBJLoader()
-                                .setMaterials(materials)
-                                .setPath("/IORI/assets/obj/shop/")
-                                .load("object" + i + ".obj", function (object) {
-                                    object.scale.setScalar(0.4);
-
-                                    scene.add(object);
-
-                                    scene.add(
-                                        new THREE.Mesh(geometry, material),
-                                    );
-
-                                    scene.add(
-                                        new THREE.HemisphereLight(
-                                            0xaaaaaa,
-                                            0x444444,
-                                            3,
-                                        ),
-                                    );
-
-                                    const light = new THREE.DirectionalLight(
-                                        0xffffff,
-                                        1.5,
-                                    );
-                                    light.position.set(1, 1, 1);
-                                    scene.add(light);
-
-                                    scenes.push(scene);
-                                });
-                        });
+            // --- Function to Initialize a Single Scene ---
+            function initScene(container, modelUrl, envMap) {
+                // Create scene
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x000000); // Match container background initially
+                if (envMap) {
+                    scene.environment = envMap; // Apply environment map
+                    // scene.background = envMap; // Use env map as background
+                    scene.backgroundIntensity = 0.5; // Dim background slightly
                 }
 
-                renderer = new THREE.WebGLRenderer({
+                // Create camera
+                const camera = new THREE.PerspectiveCamera(
+                    50,
+                    container.clientWidth / container.clientHeight,
+                    0.1,
+                    100,
+                );
+                camera.position.set(2, 2, 3); // Adjust initial camera position as needed
+
+                // Create renderer
+                const canvas = document.createElement("canvas");
+                canvas.className = "scene-canvas";
+                container.appendChild(canvas);
+
+                // Add loading indicator
+                const loadingIndicator = document.createElement("div");
+                loadingIndicator.className = "loading-indicator";
+                loadingIndicator.textContent = "Loading...";
+                container.appendChild(loadingIndicator);
+
+                const renderer = new THREE.WebGLRenderer({
                     canvas: canvas,
                     antialias: true,
+                    alpha: true,
                 });
-                renderer.setClearColor(0xffffff, 1);
+                renderer.setSize(container.clientWidth, container.clientHeight);
                 renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.toneMapping = THREE.ACESFilmicToneMapping; // Use tone mapping for HDR effect
+                renderer.toneMappingExposure = 1;
+                renderer.outputColorSpace = THREE.SRGBColorSpace; // Correct color space
+
+                // Add lighting
+                if (!envMap) {
+                    // Add basic lights if no environment map is used
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); // Soft ambient light
+                    scene.add(ambientLight);
+
+                    const directionalLight = new THREE.DirectionalLight(
+                        0xffffff,
+                        2.5,
+                    ); // Brighter directional light
+                    directionalLight.position.set(5, 10, 7.5);
+                    scene.add(directionalLight);
+                }
+
+                // Add controls
+                const controls = new OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true; // Smooth camera movement
+                controls.dampingFactor = 0.05;
+                controls.screenSpacePanning = false;
+                controls.minDistance = 1; // Prevent zooming too close
+                controls.maxDistance = 50; // Prevent zooming too far
+                controls.target.set(0, 0.5, 0); // Adjust target based on typical model height
+                controls.update();
+
+                // Load GLB/GLTF model
+                gltfLoader.load(
+                    modelUrl,
+                    (gltf) => {
+                        const model = gltf.scene;
+
+                        // Optional: Center and scale the model
+                        const box = new THREE.Box3().setFromObject(model);
+                        const center = box.getCenter(new THREE.Vector3());
+                        const size = box.getSize(new THREE.Vector3());
+                        const maxDim = Math.max(size.x, size.y, size.z);
+                        const scale = 1.5 / maxDim; // Scale model to fit roughly in a 1.5 unit space
+
+                        model.position.sub(center.multiplyScalar(scale)); // Center the model
+                        model.scale.set(scale, scale, scale); // Scale the model
+
+                        scene.add(model);
+
+                        // Adjust camera target slightly based on centered model height
+                        const centeredBox = new THREE.Box3().setFromObject(
+                            model,
+                        );
+                        const centeredCenter = centeredBox.getCenter(
+                            new THREE.Vector3(),
+                        );
+                        controls.target.copy(centeredCenter);
+                        controls.update();
+
+                        // Remove loading indicator once loaded
+                        loadingIndicator.remove();
+
+                        console.log(`Successfully loaded: ${modelUrl}`);
+                    },
+                    // Optional: Progress callback (can be used for more detailed loading bars)
+                    (xhr) => {
+                        const percentComplete = (xhr.loaded / xhr.total) * 100;
+                        loadingIndicator.textContent = `Loading: ${Math.round(percentComplete)}%`;
+                        // console.log(`${modelUrl} ${percentComplete}% loaded`);
+                    },
+                    // Error callback
+                    (error) => {
+                        console.error(`Error loading ${modelUrl}:`, error);
+                        loadingIndicator.textContent = "Load Error";
+                        loadingIndicator.style.color = "red";
+                        // Optionally display an error message in the container
+                        const errorMsg = document.createElement("p");
+                        errorMsg.textContent = "Could not load model.";
+                        errorMsg.className =
+                            "text-red-500 text-xs absolute bottom-1 left-1";
+                        container.appendChild(errorMsg);
+                    },
+                );
+
+                // Animation loop specific to this scene
+                function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update(); // Required if enableDamping is true
+                    renderer.render(scene, camera);
+                }
+
+                // Handle window resize for this specific scene
+                function onResize() {
+                    // Use parent container's size as it dictates the aspect ratio
+                    const width = container.clientWidth;
+                    const height = container.clientHeight;
+
+                    if (width > 0 && height > 0) {
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(width, height);
+                        renderer.setPixelRatio(window.devicePixelRatio); // Update pixel ratio on resize
+                    }
+                }
+
+                // Use ResizeObserver for better container resize detection
+                const resizeObserver = new ResizeObserver((entries) => {
+                    for (let entry of entries) {
+                        if (entry.target === container) {
+                            onResize();
+                        }
+                    }
+                });
+                resizeObserver.observe(container);
+
+                // Start animation loop
+                animate();
+
+                // Return the observer so it can be disconnected later if needed
+                return resizeObserver;
             }
 
-            function updateSize() {
-                const width = canvas.clientWidth;
-                const height = canvas.clientHeight;
-
-                if (canvas.width !== width || canvas.height !== height) {
-                    renderer.setSize(width, height, false);
+            // --- Main Initialization Logic ---
+            function main() {
+                // Pre-load environment map (optional)
+                if (hdrEnvironmentUrl) {
+                    rgbeLoader.load(
+                        hdrEnvironmentUrl,
+                        (texture) => {
+                            texture.mapping =
+                                THREE.EquirectangularReflectionMapping;
+                            environmentMap = texture;
+                            console.log("Environment map loaded.");
+                            // Initialize scenes *after* env map is loaded
+                            createGalleryItems();
+                        },
+                        undefined,
+                        (error) => {
+                            console.error(
+                                "Error loading HDR environment map:",
+                                error,
+                            );
+                            // Initialize scenes even if env map fails
+                            createGalleryItems();
+                        },
+                    );
+                } else {
+                    // Initialize scenes immediately if no env map
+                    createGalleryItems();
                 }
             }
 
-            function animate() {
-                render();
-                requestAnimationFrame(animate);
-            }
+            function createGalleryItems() {
+                if (!galleryGrid) {
+                    console.error("Gallery grid container not found!");
+                    return;
+                }
+                galleryGrid.innerHTML = ""; // Clear previous items if any
 
-            function render() {
-                updateSize();
+                modelUrls.forEach((url) => {
+                    // Create container div for each scene
+                    const sceneContainer = document.createElement("div");
+                    sceneContainer.className = "scene-container";
+                    galleryGrid.appendChild(sceneContainer);
 
-                canvas.style.transform = `translateY(${window.scrollY}px)`;
-
-                renderer.setClearColor(0x080a09);
-                renderer.setScissorTest(false);
-                renderer.clear();
-
-                renderer.setClearColor(0x080a09);
-                renderer.setScissorTest(true);
-
-                scenes.forEach(function (scene) {
-                    // so something moves
-                    scene.children[0].rotation.y = Date.now() * 0.001;
-
-                    // get the element that is a place holder for where we want to
-                    // draw the scene
-                    const element = scene.userData.element;
-
-                    // get its position relative to the page's viewport
-                    const rect = element.getBoundingClientRect();
-
-                    // check if it's offscreen. If so skip it
-                    if (
-                        rect.bottom < 0 ||
-                        rect.top > renderer.domElement.clientHeight ||
-                        rect.right < 0 ||
-                        rect.left > renderer.domElement.clientWidth
-                    ) {
-                        return; // it's off screen
-                    }
-
-                    // set the viewport
-                    const width = rect.right - rect.left;
-                    const height = rect.bottom - rect.top;
-                    const left = rect.left;
-                    const bottom =
-                        renderer.domElement.clientHeight - rect.bottom;
-
-                    renderer.setViewport(left, bottom, width, height);
-                    renderer.setScissor(left, bottom, width, height);
-
-                    const camera = scene.userData.camera;
-
-                    //camera.aspect = width / height; // not changing in this example
-                    //camera.updateProjectionMatrix();
-
-                    //scene.userData.controls.update();
-
-                    renderer.render(scene, camera);
+                    // Initialize the Three.js scene within this container
+                    // Pass the environment map (which might be null)
+                    initScene(sceneContainer, url, environmentMap);
                 });
             }
+
+            // Start initialization when the window is fully loaded
+            window.onload = main;
         </script>
-        <nav class="menu--bottom--right" role="navigation">
-            <div class="menuToggle">
-                <input type="checkbox" />
-                <span></span>
-                <span></span>
-                <span></span>
-                <ul class="menuItem">
-                    <li><a href="./index.html">home</a></li>
-                    <li><a href="./portfolio.html">portfolio</a></li>
-                    <li><a href="./info.html">info</a></li>
-                </ul>
-            </div>
-        </nav>
     </body>
 </html>
