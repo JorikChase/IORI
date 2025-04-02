@@ -27,7 +27,7 @@
                 background-color: black; /* Placeholder background */
                 border-radius: 0.5rem; /* Rounded corners */
                 overflow: hidden; /* Clip canvas content */
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+                border: solid 1px rgba(255, 255, 0, 0.1); /* Subtle shadow */
             }
             /* Style for the canvas element */
             .scene-canvas {
@@ -45,7 +45,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                color: #555;
+                color: #ffff00;
                 font-size: 0.875rem; /* text-sm */
             }
             /* Hide loading indicator when canvas is ready */
@@ -56,15 +56,9 @@
     </head>
     <body class="">
         <div class="container mx-auto p-4 sm:p-8">
-            <h1
-                class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 text-gray-800"
-            >
-                3D GLB Model Gallery
-            </h1>
-
             <div
                 id="gallery-grid"
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-8 sm:gap-6"
             ></div>
         </div>
 
@@ -214,12 +208,12 @@
                     (error) => {
                         console.error(`Error loading ${modelUrl}:`, error);
                         loadingIndicator.textContent = "Load Error";
-                        loadingIndicator.style.color = "red";
+                        loadingIndicator.style.color = "yellow";
                         // Optionally display an error message in the container
                         const errorMsg = document.createElement("p");
                         errorMsg.textContent = "Could not load model.";
                         errorMsg.className =
-                            "text-red-500 text-xs absolute bottom-1 left-1";
+                            "text-yellow-500 text-xs absolute bottom-1 left-1";
                         container.appendChild(errorMsg);
                     },
                 );
