@@ -117,7 +117,7 @@
             function initScene(container, modelUrl, envMap) {
                 // Create scene
                 const scene = new THREE.Scene();
-                scene.background = new THREE.Color(0x000000); // Match container background initially
+                scene.background = null;
                 if (envMap) {
                     scene.environment = envMap; // Apply environment map
                     // scene.background = envMap; // Use env map as background
