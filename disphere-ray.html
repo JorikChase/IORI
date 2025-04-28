@@ -404,7 +404,7 @@
 
                   // Orientation controls
                   if (deviceOrientationActive) {
-                      camera.quaternion.slerp(orientationQuaternion, 0.1);
+                      sphere.quaternion.slerp(orientationQuaternion, 0.1);
                   }
 
                   controls.update();
