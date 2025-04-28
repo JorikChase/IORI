@@ -92,7 +92,7 @@
                   ctx.fillStyle = gradient;
                   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                  ctx.globalAlpha = 0.7;
+                  ctx.globalAlpha = 0.1;
                   ctx.fillStyle = "#000000";
                   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -108,16 +108,16 @@
               // Sphere setup
               const sphereGeometry = new THREE.SphereGeometry(5, 128, 128);
               const sphereMaterial = new THREE.MeshPhysicalMaterial({
-                  color: 0xEEEEEE,
+                  color: 0xFFFFFF,
                   metalness: 1.0,
                   roughness: 0.01,
                   envMapIntensity: 2.0
               });
               const littleSphereMaterial = new THREE.MeshPhysicalMaterial({
                   color: 0xFFFFFF,
-                  metalness: 0.9,
+                  metalness: 0.8,
                   transparent: true,
-                  opacity: 0.3,
+                  opacity: 0.23,
                   roughness: 0.01,
                   envMapIntensity: 2.0
               });
@@ -204,7 +204,7 @@
               let gravitationalStrength = 0;
               const influenceRadius = 2;
               const pullSpeed = 0.1;
-              const returnSpeed = 0.001;
+              const returnSpeed = 0.0001;
 
               // Pointer interaction
               const raycaster = new THREE.Raycaster();
@@ -405,6 +405,7 @@
                   // Orientation controls
                   if (deviceOrientationActive) {
                       sphere.quaternion.slerp(orientationQuaternion, 0.1);
+                      environment.quaternion.slerp(orientationQuaternion, 0.1);
                   }
 
                   controls.update();
