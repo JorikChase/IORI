@@ -402,10 +402,9 @@
 
                   updateCubes();
 
-                  // Orientation controls
+                  // Modified: Apply orientation to camera instead of sphere
                   if (deviceOrientationActive) {
-                      sphere.quaternion.slerp(orientationQuaternion, 0.1);
-                      // scene.environment.quaternion.slerp(orientationQuaternion, 0.1);
+                      camera.quaternion.slerp(orientationQuaternion, 0.1);
                   }
 
                   controls.update();
